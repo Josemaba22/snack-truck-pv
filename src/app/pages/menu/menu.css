@@ -1,0 +1,40 @@
+* {
+  margin: 0 !important;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+main,
+body,
+html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #ffa;
+}
+
+.container {
+  height: 100vh;
+}
+
+section {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 5fr;
+  gap: 10px;
+}
+
+.btnMenu {
+  background-color: #0aa;
+  width: clamp(20rem, 25rem, 30rem);
+  height: clamp(4rem, 5rem, 6rem);
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.flexcenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

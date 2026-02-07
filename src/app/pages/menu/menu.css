@@ -2,6 +2,8 @@
   margin: 0 !important;
   padding: 0;
   box-sizing: border-box;
+  text-decoration: none;
+  color: inherit;
 }
 
 main,
@@ -21,7 +23,7 @@ section {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 5fr;
-  gap: 10px;
+  gap: 20px;
 }
 
 .btnMenu {
@@ -31,6 +33,11 @@ section {
   align-items: center;
   text-align: center;
   justify-content: center;
+}
+
+.btnMenu:hover {
+  background-color: #0a7;
+  cursor: pointer;
 }
 
 .flexcenter {

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nueva-orden',
@@ -7,5 +8,11 @@ import { Component } from '@angular/core';
   styleUrl: './nueva-orden.css',
 })
 export class NuevaOrden {
+  constructor(private router: Router) {}
 
+  goToMenu() {
+    this.router.navigate(['']);
+  }
+
+  snackname = 'Marquesitas';
 }

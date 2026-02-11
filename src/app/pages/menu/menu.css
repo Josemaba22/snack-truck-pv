@@ -25,6 +25,7 @@ img {
 
 section {
   display: grid;
+  font-size: clamp(0.9rem, 7vw, 10rem);
   gap: 20px;
   background-color: #fff;
   padding: 2rem;
@@ -36,9 +37,9 @@ section {
 
 .btnMenu {
   background-color: #5f5fa9;
-  width: clamp(15rem, 80%, 25rem);
+  width: clamp(15rem, 80%, 455rem);
   height: clamp(3rem, 8vh, 5rem);
-  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  font-size: clamp(0.9rem, 3vw, 2rem);
   display: flex;
   align-items: center;
   text-align: center;

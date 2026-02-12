@@ -18,6 +18,9 @@ section {
 }
 
 div {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   background-color: aqua;
   width: 10rem;
   height: 10rem;

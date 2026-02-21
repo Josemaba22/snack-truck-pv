@@ -1,12 +1,13 @@
 <button id="menu" (click)="goToMenu()">☰ Menú</button>
 <h1 class="flexcenter">NUEVA ORDEN</h1>
 <img id="logo" src="" alt="" />
-<article *ngFor="let item of items">
-  <h2 class="flexcenter">{{ snackname }}</h2>
-  <section>
-    <div *ngFor="let item of items">
+<article *ngFor="let sc of snackCategorys()">
+  <h2 class="flexcenter" (click)="toggleVisibility(sc.uuid)">{{ sc.name }}</h2>
+  <hr>
+  <section *ngIf="sc.isVisible">
+    <div *ngFor="let item of sc.snackitems" >
       <img src="" alt="" />
-      {{ item }}
+      {{ item.name }}
     </div>
   </section>
 </article>

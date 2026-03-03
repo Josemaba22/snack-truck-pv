@@ -1,7 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { SnackCategory, SnackItem } from './../../shared/interfaces/SnackCategory';
+import { SnackCategory } from './../../shared/interfaces/SnackCategory';
+import { Snack } from './../../shared/interfaces/Snack';
 
 @Component({
   selector: 'app-nueva-orden',
@@ -18,6 +19,12 @@ export class NuevaOrden {
 
   bool = signal<boolean>(true);
 
+  goToNewSnack(snack: Snack) {
+    this.router.navigate(['nueva-orden/new-snack'], {
+      state: { snack: snack },
+    });
+  }
+
   hiddeSnackname() {
     this.bool.update((v) => !v);
   }
@@ -25,7 +32,7 @@ export class NuevaOrden {
   snackCategory = signal<SnackCategory>({
     uuid: crypto.randomUUID(),
     name: 'Marquesitas',
-    snackitems: [
+    snacks: [
       { uuid: crypto.randomUUID(), name: 'Fresas' },
       { uuid: crypto.randomUUID(), name: 'Kitkat' },
     ],
@@ -35,7 +42,7 @@ export class NuevaOrden {
   snackCategory2 = signal<SnackCategory>({
     uuid: crypto.randomUUID(),
     name: 'Postres',
-    snackitems: [
+    snacks: [
       { uuid: crypto.randomUUID(), name: 'Fresas' },
       { uuid: crypto.randomUUID(), name: 'Kitkat' },
     ],
@@ -43,6 +50,7 @@ export class NuevaOrden {
   });
 
   snackCategorys = signal([this.snackCategory(), this.snackCategory2()]);
+
   toggleVisibility(uuid: string) {
     this.snackCategorys.update((categories) =>
       categories.map((cat) => (cat.uuid === uuid ? { ...cat, isVisible: !cat.isVisible } : cat)),
@@ -51,5 +59,5 @@ export class NuevaOrden {
 
   snackname = this.snackCategory().name;
 
-  items: SnackItem[] = this.snackCategory().snackitems;
+  items: Snack[] = this.snackCategory().snacks;
 }

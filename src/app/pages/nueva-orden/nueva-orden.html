@@ -5,9 +5,9 @@
   <h2 class="flexcenter" (click)="toggleVisibility(sc.uuid)">{{ sc.name }}</h2>
   <hr>
   <section *ngIf="sc.isVisible">
-    <div *ngFor="let item of sc.snackitems" >
+    <div *ngFor="let snack of sc.snacks" (click)="goToNewSnack(snack)">
       <img src="" alt="" />
-      {{ item.name }}
+      {{ snack.name }}
     </div>
   </section>
 </article>

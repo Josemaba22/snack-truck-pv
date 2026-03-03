@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { Menu } from './pages/menu/menu';
 import { NuevaOrden } from './pages/nueva-orden/nueva-orden';
+import { NewSnack } from './pages/new-snack/new-snack';
 
 export const routes: Routes = [
   {
@@ -10,5 +11,9 @@ export const routes: Routes = [
   {
     path: 'nueva-orden',
     component: NuevaOrden,
+  },
+  {
+    path: 'nueva-orden/new-snack',
+    component: NewSnack,
   },
 ];

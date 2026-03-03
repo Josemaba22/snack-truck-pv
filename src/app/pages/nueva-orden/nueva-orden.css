@@ -1,14 +1,10 @@
-main {
-  padding: 20px;
-  font-size: 1.5rem;
-}
-
 h1 {
   color: #333;
 }
 
 section {
   display: grid;
+  padding: 20px;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   margin: 0 auto;
   justify-content: center;
@@ -18,8 +14,9 @@ section {
 }
 
 div {
+  font-size: clamp(1rem, 2rem, 5rem);
   display: flex;
-  justify-content: center;
+  justify-content: end;
   flex-direction: column;
   background-color: aqua;
   width: 10rem;
@@ -31,7 +28,7 @@ div {
 #menu {
   background: #333;
   color: white;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2rem, 4rem);
   border: none;
   padding: 10px 15px;
   cursor: pointer;

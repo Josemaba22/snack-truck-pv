@@ -1,11 +1,7 @@
-export interface SnackItem {
-  uuid: string;
-  name: string;
-}
-
+import { Snack } from './Snack';
 export interface SnackCategory {
   uuid: string;
   name: string;
-  snackitems: SnackItem[];
+  snacks: Snack[];
   isVisible: boolean;
 }

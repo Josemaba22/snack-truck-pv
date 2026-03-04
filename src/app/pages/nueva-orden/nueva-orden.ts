@@ -3,19 +3,16 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SnackCategory } from './../../shared/interfaces/SnackCategory';
 import { Snack } from './../../shared/interfaces/Snack';
+import { BtnMenu } from '../../components/btn-menu/btn-menu';
 
 @Component({
   selector: 'app-nueva-orden',
-  imports: [CommonModule],
+  imports: [CommonModule, BtnMenu],
   templateUrl: './nueva-orden.html',
   styleUrl: './nueva-orden.css',
 })
 export class NuevaOrden {
   constructor(private router: Router) {}
-
-  goToMenu() {
-    this.router.navigate(['']);
-  }
 
   bool = signal<boolean>(true);
 

@@ -25,17 +25,4 @@ div {
   border-radius: 50%;
 }
 
-#menu {
-  background: #333;
-  color: white;
-  font-size: clamp(0.9rem, 2rem, 4rem);
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-bottom: 20px;
-}
 
-#menu:hover {
-  background: #555;
-}

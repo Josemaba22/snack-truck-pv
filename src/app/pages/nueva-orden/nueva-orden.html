@@ -1,11 +1,11 @@
 <app-btn-menu route=""></app-btn-menu>
-<h1 class="flexcenter">NUEVA ORDEN</h1>
+<h1 class="h1-nueva-orden flexcenter">NUEVA ORDEN</h1>
 <img id="logo" src="" alt="" />
 <article *ngFor="let sc of snackCategorys()">
   <h2 class="flexcenter" (click)="toggleVisibility(sc.uuid)">{{ sc.name }}</h2>
   <hr>
-  <section *ngIf="sc.isVisible">
-    <div *ngFor="let snack of sc.snacks" (click)="goToNewSnack(snack)">
+  <section class="section-snacks-name" *ngIf="sc.isVisible">
+    <div class="div-snack" *ngFor="let snack of sc.snacks" (click)="goToNewSnack(snack)">
       <img src="" alt="" />
       {{ snack.name }}
     </div>

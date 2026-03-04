@@ -1,11 +1,11 @@
-h1 {
+.h1-nueva-orden {
   color: #333;
 }
 
-section {
+.section-snacks-name {
   display: grid;
   padding: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
   margin: 0 auto;
   justify-content: center;
   grid-gap: 20px;
@@ -13,16 +13,14 @@ section {
   text-align: center;
 }
 
-div {
+.div-snack {
   font-size: clamp(1rem, 2rem, 5rem);
   display: flex;
   justify-content: end;
   flex-direction: column;
   background-color: aqua;
-  width: 10rem;
-  height: 10rem;
+  width: 7rem;
+  height: 7rem;
   justify-self: center;
   border-radius: 50%;
 }
-
-

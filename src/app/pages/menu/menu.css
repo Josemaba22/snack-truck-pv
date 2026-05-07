@@ -6,37 +6,46 @@
   color: inherit;
 }
 
-main,
-body,
-html {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  background-color: #ffa;
-}
-
-.container {
-  height: 100vh;
+img {
+  height: 10vh;
+  background-color: #aaa;
+  width: 250px;
+  justify-self: center;
+  align-self: center;
+  border-radius: 50%;
 }
 
 section {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 5fr;
+  font-size: clamp(0.9rem, 7vw, 10rem);
   gap: 20px;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 2rem;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
 .btnMenu {
-  background-color: #0aa;
-  width: clamp(20rem, 25rem, 30rem);
-  height: clamp(4rem, 5rem, 6rem);
+  background-color: #aaf;
+  width: clamp(15rem, 80%, 455rem);
+  height: clamp(3rem, 8vh, 5rem);
+  font-size: clamp(0.9rem, 3vw, 2rem);
+  display: flex;
   align-items: center;
   text-align: center;
   justify-content: center;
+  justify-self: center;
+  align-self: center;
+  border-radius: 10px;
+  box-shadow:
+    inset 0 2px 4px -1px #aaa,
+    0 4px 6px -1px #aaa;
 }
 
 .btnMenu:hover {
-  background-color: #0a7;
+  background-color: #55f;
   cursor: pointer;
 }
 

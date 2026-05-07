@@ -1,1 +1,8 @@
-<router-outlet></router-outlet>
+<main class="marco">
+  <section class="panel">
+    @if (showMenuHamburguesa()) {
+      <app-menu-hamburguesa></app-menu-hamburguesa>
+    }
+    <router-outlet></router-outlet>
+  </section>
+</main>

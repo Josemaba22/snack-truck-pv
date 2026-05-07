@@ -1,0 +1,18 @@
+.marco {
+  display: flex;
+  justify-content: center;
+  background-color: #faa;
+  height: 100vh;
+}
+
+.panel {
+  background-color: #fff;
+  border-radius: 25px;
+  padding: 25px;
+  margin: 25px;
+  width: 100%;
+  height: calc(100vh-50px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}

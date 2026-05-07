@@ -1,19 +1,13 @@
-<main>
-  <img id="menu" src="" alt="" />
-  <h1 class="flexcenter">NUEVA ORDEN</h1>
-  <img id="logo" src="" alt="" />
-  <section>
-    <div>
+<app-btn-menu route=""></app-btn-menu>
+<h1 class="h1-nueva-orden flexcenter">NUEVA ORDEN</h1>
+<img id="logo" src="" alt="" />
+<article *ngFor="let sc of snackCategorys()">
+  <h2 class="flexcenter" (click)="toggleVisibility(sc.uuid)">{{ sc.name }}</h2>
+  <hr>
+  <section class="section-snacks-name" *ngIf="sc.isVisible">
+    <div class="div-snack" *ngFor="let snack of sc.snacks" (click)="goToNewSnack(snack)">
       <img src="" alt="" />
-      sas
-    </div>
-    <div>
-      <img src="" alt="" />
-      sas
-    </div>
-    <div>
-      <img src="" alt="" />
-      sas
+      {{ snack.name }}
     </div>
   </section>
-</main>
+</article>

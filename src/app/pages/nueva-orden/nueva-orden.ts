@@ -33,7 +33,7 @@ export class NuevaOrden {
       { uuid: crypto.randomUUID(), name: 'Fresas' },
       { uuid: crypto.randomUUID(), name: 'Kitkat' },
     ],
-    isVisible: true,
+    isVisible: false,
   });
 
   snackCategory2 = signal<SnackCategory>({
@@ -43,7 +43,7 @@ export class NuevaOrden {
       { uuid: crypto.randomUUID(), name: 'Fresas' },
       { uuid: crypto.randomUUID(), name: 'Kitkat' },
     ],
-    isVisible: true,
+    isVisible: false,
   });
 
   snackCategorys = signal([this.snackCategory(), this.snackCategory2()]);

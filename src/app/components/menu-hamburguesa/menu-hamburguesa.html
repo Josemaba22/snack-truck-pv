@@ -1,0 +1,16 @@
+@if (isOpen()) {
+  <div class="overlay" (click)="onOverlayClick()"></div>
+  <nav class="menu-container">
+    <img src="" alt="" />
+    <label for="" class="flexcenter">MENU</label>
+    <a routerLink="/nueva-orden" class="btnMenu flexcenter" (click)="onOverlayClick()">NUEVA ORDEN</a>
+    <div class="btnMenu flexcenter" type="">ORDENES PENDIENTES</div>
+    <div class="btnMenu flexcenter" type="">ORDENES ENTREGADAS</div>
+    <div class="btnMenu flexcenter" type="">CORTE DE CAJA</div>
+  </nav>
+}
+<button class="hamburger-icon" (click)="toggle()">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>

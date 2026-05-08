@@ -1,12 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ProductSelector } from './components/product/product-selector/product-selector';
+import { Catalog } from './components/products/catalog/catalog';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ProductSelector],
+  imports: [RouterOutlet, Catalog],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('markesitas-v2');

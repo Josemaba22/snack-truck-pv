@@ -1,3 +1,27 @@
 <section>
-  <app-category></app-category>
+  <!-- Loading state -->
+  <div *ngIf="loading()" class="loading">
+    <p>Cargando catálogo...</p>
+  </div>
+
+  <div>sas</div>
+
+  <!-- Error state -->
+  <div *ngIf="error()" class="error">
+    <p>{{ error() }}</p>
+    <button (click)="loadData()">Reintentar</button>
+  </div>
+
+  <!-- Categories -->
+  <div *ngIf="!loading() && !error()">
+    <app-category
+      *ngFor="let category of categoriesUi()"
+      [category]="category"
+      [products]="getProductsForCategory(category.id)"
+    ></app-category>
+    <!-- Empty state -->
+    <div *ngIf="categoriesUi().length === 0" class="empty">
+      <p>No hay categorías disponibles</p>
+    </div>
+  </div>
 </section>

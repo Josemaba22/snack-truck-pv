@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-
+import { ButtonVariant, ButtonSize } from './button.types';
 @Component({
   selector: 'app-button',
   imports: [],
@@ -7,9 +7,9 @@ import { Component, input, output } from '@angular/core';
   styleUrl: './button.css',
 })
 export class Button {
-  variant = input('primary');
+  variant = input<ButtonVariant>('primary');
 
-  size = input('md');
+  size = input<ButtonSize>('md');
 
   fullWidth = input(false);
 

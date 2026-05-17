@@ -1,8 +1,9 @@
 import { Component, input, output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ButtonVariant, ButtonSize } from './button.types';
 @Component({
   selector: 'app-button',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './button.html',
   styleUrl: './button.css',
 })

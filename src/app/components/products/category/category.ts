@@ -1,5 +1,4 @@
 import { Component, input, signal } from '@angular/core';
-
 import { CategoryUi } from '../../../models/ui/category.ui';
 import { ProductView } from '../../../models/view/product.view';
 

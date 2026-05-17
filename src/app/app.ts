@@ -1,5 +1,4 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { Catalog } from './components/products/catalog/catalog';
 import { Example } from '../app/shared/button/example/example';
 

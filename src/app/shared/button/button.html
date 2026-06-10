@@ -1,7 +1,7 @@
 <button
   class="btn"
   [ngClass]="classes"
-  [disabled]="disabled || loading"
+  [disabled]="disabled() || loading()"
   (click)="handleClick()"
   type="button"
 >

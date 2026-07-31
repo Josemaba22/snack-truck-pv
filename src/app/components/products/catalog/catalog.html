@@ -1,27 +1,35 @@
 <section>
-  <!-- Loading state -->
   <div *ngIf="loading()" class="loading">
     <p>Cargando catálogo...</p>
   </div>
 
-  <div>sas</div>
-
-  <!-- Error state -->
   <div *ngIf="error()" class="error">
     <p>{{ error() }}</p>
     <button (click)="loadData()">Reintentar</button>
   </div>
 
-  <!-- Categories -->
   <div *ngIf="!loading() && !error()">
-    <app-category
-      *ngFor="let category of categoriesUi()"
-      [category]="category"
-      [products]="getProductsForCategory(category.id)"
-    ></app-category>
-    <!-- Empty state -->
-    <div *ngIf="categoriesUi().length === 0" class="empty">
-      <p>No hay categorías disponibles</p>
-    </div>
+    <ng-container *ngIf="selectedCategory() as category; else categoryList">
+      <app-category
+        [category]="category"
+        [products]="getProductsForCategory(category.id)"
+        (back)="clearSelection()"
+        (selected)="productSelected.emit($event)"
+      ></app-category>
+    </ng-container>
+
+    <ng-template #categoryList>
+      <ul class="category-list">
+        <li *ngFor="let category of categoriesUi()">
+          <button type="button" class="category-list__item" (click)="selectCategory(category)">
+            {{ category.name }}
+          </button>
+        </li>
+      </ul>
+
+      <div *ngIf="categoriesUi().length === 0" class="empty">
+        <p>No hay categorías disponibles</p>
+      </div>
+    </ng-template>
   </div>
 </section>

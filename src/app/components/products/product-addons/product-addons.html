@@ -1,1 +1,17 @@
-<p>product-addons works!</p>
+<ul class="product-addons">
+  <li *ngFor="let addon of addons()">
+    <button
+      type="button"
+      class="product-addons__item"
+      [class.product-addons__item--selected]="isSelected(addon)"
+      (click)="toggled.emit(addon)"
+    >
+      <span>{{ addon.addonName }}</span>
+      <span>{{ addon.addonPrice | currency }}</span>
+    </button>
+  </li>
+
+  <li *ngIf="addons().length === 0" class="product-addons__empty">
+    Este producto no tiene extras disponibles
+  </li>
+</ul>

@@ -1,7 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ProductView } from '../../../models/view/product.view';
+import { ProductResponse } from '../../../models/api/product.api';
 
 @Component({
   selector: 'app-product-card',
@@ -11,5 +11,11 @@ import { ProductView } from '../../../models/view/product.view';
   styleUrl: './product-card.css',
 })
 export class ProductCard {
-  product = input.required<ProductView>();
+  product = input.required<ProductResponse>();
+
+  selected = output<ProductResponse>();
+
+  onSelect(): void {
+    this.selected.emit(this.product());
+  }
 }

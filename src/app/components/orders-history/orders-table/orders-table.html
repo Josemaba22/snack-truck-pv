@@ -1,1 +1,28 @@
-<p>orders-table works!</p>
+<table class="orders-table">
+  <thead>
+    <tr>
+      <th># Orden</th>
+      <th>Fecha</th>
+      <th>Total</th>
+      <th>Pago</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of orders()">
+      <td># {{ order.orderNumber }}</td>
+      <td>{{ order.createdAt | date: 'short' }}</td>
+      <td>{{ order.total | currency }}</td>
+      <td>{{ order.paymentMethod === 'CASH' ? 'Efectivo' : order.paymentMethod }}</td>
+      <td>ENTREGADO</td>
+      <td>
+        <button type="button" (click)="viewOrder.emit(order)">VER</button>
+      </td>
+    </tr>
+
+    <tr *ngIf="orders().length === 0">
+      <td colspan="6">No hay órdenes entregadas</td>
+    </tr>
+  </tbody>
+</table>

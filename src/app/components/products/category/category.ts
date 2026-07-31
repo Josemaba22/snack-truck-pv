@@ -1,8 +1,8 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CategoryUi } from '../../../models/ui/category.ui';
-import { ProductView } from '../../../models/view/product.view';
+import { ProductResponse } from '../../../models/api/product.api';
 
 import { ProductCard } from '../product-card/product-card';
 
@@ -16,11 +16,9 @@ import { ProductCard } from '../product-card/product-card';
 export class Category {
   category = input.required<CategoryUi>();
 
-  products = input.required<ProductView[]>();
+  products = input.required<ProductResponse[]>();
 
-  dropdown = signal(false);
+  back = output<void>();
 
-  toggleDropdown(): void {
-    this.dropdown.update((value) => !value);
-  }
+  selected = output<ProductResponse>();
 }

@@ -1,0 +1,63 @@
+<section class="cart-panel">
+  <header class="cart-panel__header">
+    <h2>Resumen de orden</h2>
+  </header>
+
+  <ul class="cart-panel__items">
+    <li *ngFor="let item of cart.items()" class="cart-panel__item">
+      <div class="cart-panel__item-header">
+        <span class="cart-panel__item-name">{{ item.product.name }}</span>
+        <span class="cart-panel__item-total">{{ lineTotal(item) | currency }}</span>
+      </div>
+
+      <app-selected-addons [addons]="item.selectedAddons" [interactive]="false"></app-selected-addons>
+
+      <div class="cart-panel__item-actions">
+        <button type="button" class="cart-panel__edit" (click)="editItem.emit(item)" aria-label="Editar">
+          ✏️
+        </button>
+        <button
+          type="button"
+          class="cart-panel__remove"
+          (click)="removeItem(item.cartItemId)"
+          aria-label="Quitar"
+        >
+          🗑️
+        </button>
+      </div>
+    </li>
+  </ul>
+
+  <p *ngIf="cart.isEmpty()" class="cart-panel__empty">Aún no has agregado ningún snack</p>
+
+  <button type="button" class="cart-panel__add-snack" (click)="addSnack.emit()">+ Agregar Snack</button>
+
+  <label class="cart-panel__notes">
+    Notas:
+    <textarea [ngModel]="cart.notes()" (ngModelChange)="onNotesChange($event)"></textarea>
+  </label>
+
+  <div class="cart-panel__total">Total: {{ cart.total() | currency }}</div>
+
+  <div class="cart-panel__footer">
+    <button type="button" class="cart-panel__cancel" (click)="openCancelConfirm()">Cancelar Orden</button>
+    <button
+      type="button"
+      class="cart-panel__checkout"
+      [disabled]="cart.isEmpty()"
+      (click)="checkout.emit()"
+    >
+      Cobrar
+    </button>
+  </div>
+</section>
+
+<app-dialog
+  [open]="confirmCancelOpen()"
+  title="Cancelar orden"
+  message="¿Seguro que deseas cancelar esta orden? Se perderán los snacks agregados."
+  confirmLabel="Sí, cancelar"
+  cancelLabel="Seguir con la orden"
+  (confirmed)="confirmCancel()"
+  (cancelled)="dismissCancel()"
+></app-dialog>

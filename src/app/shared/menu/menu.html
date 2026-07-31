@@ -1,1 +1,35 @@
-<p>menu works!</p>
+<button type="button" class="menu__toggle" (click)="toggle()" aria-label="Menú">☰</button>
+
+<div *ngIf="open()" class="menu__backdrop" (click)="close()"></div>
+
+<nav class="menu__drawer" [class.menu__drawer--open]="open()">
+  <h2 class="menu__title">MENU</h2>
+
+  <a routerLink="/pos" routerLinkActive="menu__item--active" (click)="close()" class="menu__item menu__item--nueva">
+    NUEVA ORDEN
+  </a>
+  <a
+    routerLink="/kitchen"
+    routerLinkActive="menu__item--active"
+    (click)="close()"
+    class="menu__item menu__item--pendientes"
+  >
+    ORDENES PENDIENTES
+  </a>
+  <a
+    routerLink="/orders-history"
+    routerLinkActive="menu__item--active"
+    (click)="close()"
+    class="menu__item menu__item--entregadas"
+  >
+    ORDENES ENTREGADAS
+  </a>
+  <a
+    routerLink="/cash-closing"
+    routerLinkActive="menu__item--active"
+    (click)="close()"
+    class="menu__item menu__item--corte"
+  >
+    CORTE DE CAJA
+  </a>
+</nav>

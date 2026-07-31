@@ -1,0 +1,20 @@
+.cart-panel__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border-bottom: 1px solid #ddd;
+  padding: 0.5rem 0;
+}
+
+.cart-panel__item-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+.cart-panel__footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}

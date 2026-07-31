@@ -1,1 +1,35 @@
-<p>custom-product works!</p>
+<section class="custom-product">
+  <header class="custom-product__header">
+    <button type="button" class="custom-product__back" (click)="back.emit()">← Inicio</button>
+    <h2>Nuevo Snack</h2>
+  </header>
+
+  <div class="custom-product__banner">
+    <span class="custom-product__name">{{ product().name }}</span>
+    <span class="custom-product__price">{{ product().price | currency }}</span>
+  </div>
+
+  <p *ngIf="loading()">Cargando extras...</p>
+
+  <ng-container *ngIf="!loading()">
+    <app-selected-addons
+      [addons]="selectedAddons()"
+      [interactive]="true"
+      (removed)="onAddonRemoved($event)"
+    ></app-selected-addons>
+
+    <button type="button" class="custom-product__add-extra" (click)="toggleExtras()">+ Extra</button>
+
+    <div *ngIf="extrasOpen()" class="custom-product__extras">
+      <h3>Extras</h3>
+      <app-product-addons
+        [addons]="availableAddons()"
+        [selectedIds]="selectedIds()"
+        (toggled)="onAddonToggled($event)"
+      ></app-product-addons>
+      <button type="button" class="custom-product__cancel" (click)="toggleExtras()">Cancelar</button>
+    </div>
+
+    <button type="button" class="custom-product__save" (click)="save()">Guardar Snack</button>
+  </ng-container>
+</section>

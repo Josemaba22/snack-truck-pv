@@ -1,5 +1,5 @@
-import { CategoryDb } from '../db/category.db';
+import { CategoryResponse } from '../api/category.api';
 
-export interface CategoryUi extends CategoryDb {
+export interface CategoryUi extends CategoryResponse {
   dropdown: boolean;
 }

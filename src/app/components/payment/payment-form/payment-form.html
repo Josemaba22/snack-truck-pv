@@ -1,1 +1,47 @@
-<p>payment-form works!</p>
+<section class="payment-form">
+  <header class="payment-form__header">
+    <h2>Cobro de la Orden</h2>
+  </header>
+
+  <p class="payment-form__method">Efectivo</p>
+
+  <div class="payment-form__amounts">
+    <div class="payment-form__row">
+      <span>Total:</span>
+      <span>{{ total() | currency }}</span>
+    </div>
+    <div class="payment-form__row">
+      <span>Falta Pagar:</span>
+      <span>{{ missingAmount() | currency }}</span>
+    </div>
+    <div class="payment-form__row">
+      <span>Cambio:</span>
+      <span>{{ change() | currency }}</span>
+    </div>
+  </div>
+
+  <input class="payment-form__display" type="text" [value]="inputBuffer()" placeholder="Ingresar Cantidad" readonly />
+
+  <div class="payment-form__pad">
+    <div class="payment-form__bills">
+      <button type="button" *ngFor="let bill of quickBills" (click)="addBill(bill)">
+        Billete ${{ bill }}
+      </button>
+    </div>
+
+    <div class="payment-form__keys">
+      <button type="button" *ngFor="let key of ['1','2','3','4','5','6','7','8','9']" (click)="appendDigit(key)">
+        {{ key }}
+      </button>
+      <button type="button" (click)="appendDigit('0')">0</button>
+      <button type="button" (click)="appendDigit('.')">.</button>
+      <button type="button" (click)="backspace()">⌫</button>
+    </div>
+
+    <button type="button" class="payment-form__confirm" [disabled]="!canConfirm()" (click)="confirm()">
+      Cobrar →
+    </button>
+  </div>
+
+  <p *ngIf="errorMessage()" class="payment-form__error">{{ errorMessage() }}</p>
+</section>

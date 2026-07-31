@@ -1,1 +1,11 @@
-<p>summary-cards works!</p>
+<div class="summary-cards">
+  <div class="summary-cards__card">
+    <span>Órdenes hoy</span>
+    <strong>{{ count() }}</strong>
+  </div>
+
+  <div class="summary-cards__card">
+    <span>Ventas totales</span>
+    <strong>{{ totalSales() | currency }}</strong>
+  </div>
+</div>

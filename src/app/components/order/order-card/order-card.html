@@ -1,1 +1,22 @@
-<p>order-card works!</p>
+<article class="order-card">
+  <header class="order-card__header" (click)="toggleDetails()">
+    <span class="order-card__number">ORD-{{ order().orderNumber }}</span>
+    <span class="order-card__time">{{ relativeTime() }}</span>
+    <span class="order-card__status">{{ statusLabel() }}</span>
+  </header>
+
+  <p class="order-card__summary">{{ itemsSummary() }}</p>
+
+  <div *ngIf="detailsOpen()" class="order-card__details">
+    <app-order-details [order]="order()"></app-order-details>
+  </div>
+
+  <button
+    *ngIf="actionLabel() as label"
+    type="button"
+    class="order-card__advance"
+    (click)="onAdvance()"
+  >
+    {{ label }}
+  </button>
+</article>

@@ -1,1 +1,11 @@
-<p>dialog works!</p>
+<dialog #dialogEl class="app-dialog" (cancel)="onCancel()">
+  <h2 *ngIf="title()" class="app-dialog__title">{{ title() }}</h2>
+  <p *ngIf="message()" class="app-dialog__message">{{ message() }}</p>
+
+  <ng-content></ng-content>
+
+  <div class="app-dialog__actions">
+    <button type="button" class="app-dialog__cancel" (click)="onCancel()">{{ cancelLabel() }}</button>
+    <button type="button" class="app-dialog__confirm" (click)="onConfirm()">{{ confirmLabel() }}</button>
+  </div>
+</dialog>

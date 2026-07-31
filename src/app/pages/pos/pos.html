@@ -1,1 +1,21 @@
-<p>pos works!</p>
+<div [ngSwitch]="step()">
+  <app-catalog *ngSwitchCase="'catalog'" (productSelected)="onProductSelected($event)"></app-catalog>
+
+  <app-custom-product
+    *ngSwitchCase="'personalize'"
+    [product]="selectedProduct()!"
+    [initialAddons]="editingInitialAddons()"
+    (back)="onPersonalizeBack()"
+    (saved)="onSnackSaved($event)"
+  ></app-custom-product>
+
+  <app-cart-panel
+    *ngSwitchCase="'summary'"
+    (addSnack)="onAddSnack()"
+    (editItem)="onEditItem($event)"
+    (cancelledOrder)="onOrderCancelled()"
+    (checkout)="onCheckout()"
+  ></app-cart-panel>
+
+  <app-payment-form *ngSwitchCase="'payment'" (paid)="onOrderPaid()"></app-payment-form>
+</div>

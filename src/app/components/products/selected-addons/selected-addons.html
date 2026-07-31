@@ -1,1 +1,16 @@
-<p>selected-addons works!</p>
+<ul class="selected-addons">
+  <li *ngFor="let addon of addons()" class="selected-addons__chip">
+    <span>{{ addon.addonName }}</span>
+    <span>{{ addon.addonPrice | currency }}</span>
+    <button
+      *ngIf="interactive()"
+      type="button"
+      class="selected-addons__remove"
+      (click)="removed.emit(addon.addonId)"
+    >
+      ×
+    </button>
+  </li>
+
+  <li *ngIf="addons().length === 0" class="selected-addons__empty">Sin extras</li>
+</ul>

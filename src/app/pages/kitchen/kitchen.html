@@ -1,1 +1,7 @@
-<p>kitchen works!</p>
+<section class="kitchen">
+  <header class="kitchen__header">
+    <h2>Órdenes Pendientes</h2>
+  </header>
+
+  <app-order-card-list [orders]="ordersStore.activeOrders()" (advance)="onAdvance($event)"></app-order-card-list>
+</section>

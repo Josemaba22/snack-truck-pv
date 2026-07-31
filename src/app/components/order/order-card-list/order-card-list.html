@@ -1,1 +1,9 @@
-<p>order-card-list works!</p>
+<div class="order-card-list">
+  <app-order-card
+    *ngFor="let order of orders()"
+    [order]="order"
+    (advance)="advance.emit($event)"
+  ></app-order-card>
+
+  <p *ngIf="orders().length === 0" class="order-card-list__empty">No hay órdenes por mostrar</p>
+</div>

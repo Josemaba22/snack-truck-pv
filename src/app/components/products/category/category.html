@@ -1,12 +1,20 @@
 <section class="category">
   <header class="category__header">
+    <button class="category__back" type="button" (click)="back.emit()">←</button>
     <h2 class="category__title">{{ category().name }}</h2>
   </header>
 
-  <div class="category__divider"></div>
   <hr />
 
-  <div *ngIf="products().length > 0" class="category__products">
-    <app-product-card *ngFor="let product of products()" [product]="product"></app-product-card>
+  <div *ngIf="products().length > 0; else empty" class="category__products">
+    <app-product-card
+      *ngFor="let product of products()"
+      [product]="product"
+      (selected)="selected.emit($event)"
+    ></app-product-card>
   </div>
+
+  <ng-template #empty>
+    <p class="category__empty">No hay productos en esta categoría</p>
+  </ng-template>
 </section>

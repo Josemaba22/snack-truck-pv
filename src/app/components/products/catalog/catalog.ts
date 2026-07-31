@@ -1,11 +1,12 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { forkJoin } from 'rxjs';
 
 import { Category } from '../category/category';
-import { ProductsRepository } from '../../../services/products-repository';
-import { SeedData } from '../../../services/seed-data';
+import { CategoriesApiService } from '../../../services/categories-api';
+import { ProductsApiService } from '../../../services/products-api';
 import { CategoryUi } from '../../../models/ui/category.ui';
-import { ProductView } from '../../../models/view/product.view';
+import { ProductResponse } from '../../../models/api/product.api';
 
 @Component({
   selector: 'app-catalog',
@@ -16,58 +17,64 @@ import { ProductView } from '../../../models/view/product.view';
 })
 export class Catalog implements OnInit {
   categoriesUi = signal<CategoryUi[]>([]);
-  productsByCategory = signal<Map<string, ProductView[]>>(new Map());
+  productsByCategory = signal<Map<string, ProductResponse[]>>(new Map());
+  selectedCategory = signal<CategoryUi | null>(null);
   loading = signal(true);
   error = signal<string | null>(null);
 
+  productSelected = output<ProductResponse>();
+
   constructor(
-    private readonly productsRepository: ProductsRepository,
-    private readonly seedData: SeedData,
+    private readonly categoriesApi: CategoriesApiService,
+    private readonly productsApi: ProductsApiService,
   ) {}
 
-  async ngOnInit(): Promise<void> {
-    // Poblar datos iniciales si no existen
-    await this.seedData.seed();
-    // Luego cargar los datos
-    await this.loadData();
+  ngOnInit(): void {
+    this.loadData();
   }
 
-  async loadData(): Promise<void> {
-    try {
-      this.loading.set(true);
-      this.error.set(null);
+  loadData(): void {
+    this.loading.set(true);
+    this.error.set(null);
 
-      // Cargar categorías y productos
-      const [categories, products] = await Promise.all([
-        this.productsRepository.getCategories(),
-        this.productsRepository.getProducts(),
-      ]);
+    forkJoin({
+      categories: this.categoriesApi.getAll(),
+      products: this.productsApi.getAll(),
+    }).subscribe({
+      next: ({ categories, products }) => {
+        const categoriesUi: CategoryUi[] = categories
+          .slice()
+          .sort((a, b) => a.displayOrder - b.displayOrder)
+          .map((category) => ({ ...category, dropdown: false }));
 
-      // Transformar categorías a CategoryUi
-      const categoriesUi: CategoryUi[] = categories.map((cat) => ({
-        ...cat,
-        dropdown: false,
-      }));
+        const productsMap = new Map<string, ProductResponse[]>();
+        for (const product of products) {
+          const existing = productsMap.get(product.categoryId) ?? [];
+          existing.push(product);
+          productsMap.set(product.categoryId, existing);
+        }
 
-      // Agrupar productos por categoría
-      const productsMap = new Map<string, ProductView[]>();
-      for (const product of products) {
-        const existing = productsMap.get(product.categoryId) || [];
-        existing.push(product);
-        productsMap.set(product.categoryId, existing);
-      }
-
-      this.categoriesUi.set(categoriesUi);
-      this.productsByCategory.set(productsMap);
-    } catch (err) {
-      this.error.set('Error al cargar los datos');
-      console.error(err);
-    } finally {
-      this.loading.set(false);
-    }
+        this.categoriesUi.set(categoriesUi);
+        this.productsByCategory.set(productsMap);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.error.set('Error al cargar el catálogo');
+        console.error(err);
+        this.loading.set(false);
+      },
+    });
   }
 
-  getProductsForCategory(categoryId: string): ProductView[] {
-    return this.productsByCategory().get(categoryId) || [];
+  getProductsForCategory(categoryId: string): ProductResponse[] {
+    return this.productsByCategory().get(categoryId) ?? [];
+  }
+
+  selectCategory(category: CategoryUi): void {
+    this.selectedCategory.set(category);
+  }
+
+  clearSelection(): void {
+    this.selectedCategory.set(null);
   }
 }

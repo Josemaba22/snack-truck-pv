@@ -1,9 +1,10 @@
 <article class="product">
-  <button class="product__button" type="button">
+  <button class="product__button" type="button" (click)="onSelect()">
     <div class="product__image-container">
       <img class="product__image" />
     </div>
 
     <span class="product__name">{{ product().name }}</span>
+    <span class="product__price">{{ product().price | currency }}</span>
   </button>
 </article>

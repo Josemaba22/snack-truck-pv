@@ -1,4 +1,4 @@
-<div [ngSwitch]="step()">
+<div [ngSwitch]="step()" class="pos__content">
   <app-catalog *ngSwitchCase="'catalog'" (productSelected)="onProductSelected($event)"></app-catalog>
 
   <app-custom-product

@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--color-pink-bg);
+}
+
+:root {
+  --color-pink-soft: #f6c9d4;
+  --color-pink-strong: #e79cb2;
+  --color-pink-bg: #fdf1f4;
+  --color-white: #ffffff;
+  --color-text: #111827;
+  --color-text-muted: #6b7280;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}

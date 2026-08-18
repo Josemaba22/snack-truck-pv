@@ -1,4 +1,5 @@
 <section>
+  <h2>Nuevo Snack</h2>
   <div *ngIf="loading()" class="loading">
     <p>Cargando catálogo...</p>
   </div>
@@ -8,7 +9,7 @@
     <button (click)="loadData()">Reintentar</button>
   </div>
 
-  <div *ngIf="!loading() && !error()">
+  <div *ngIf="!loading() && !error()" class="catalog__content">
     <ng-container *ngIf="selectedCategory() as category; else categoryList">
       <app-category
         [category]="category"
@@ -19,16 +20,18 @@
     </ng-container>
 
     <ng-template #categoryList>
-      <ul class="category-list">
-        <li *ngFor="let category of categoriesUi()">
-          <button type="button" class="category-list__item" (click)="selectCategory(category)">
-            {{ category.name }}
-          </button>
-        </li>
-      </ul>
+      <div class="category-list-wrapper">
+        <ul class="category-list">
+          <li *ngFor="let category of categoriesUi()">
+            <button type="button" class="category-list__item" (click)="selectCategory(category)">
+              {{ category.name }}
+            </button>
+          </li>
+        </ul>
 
-      <div *ngIf="categoriesUi().length === 0" class="empty">
-        <p>No hay categorías disponibles</p>
+        <div *ngIf="categoriesUi().length === 0" class="empty">
+          <p>No hay categorías disponibles</p>
+        </div>
       </div>
     </ng-template>
   </div>

@@ -15,6 +15,13 @@ body {
   --color-white: #ffffff;
   --color-text: #111827;
   --color-text-muted: #6b7280;
+  --color-success: #22c55e;
+  --color-success-strong: #16a34a;
+  --color-success-bg: #eafaf0;
+  --color-danger: #dc2626;
+  --color-danger-bg: #fdecec;
+  --color-primary: #2563eb;
+  --color-primary-bg: #eaf2ff;
   --radius-md: 8px;
   --radius-lg: 12px;
 }

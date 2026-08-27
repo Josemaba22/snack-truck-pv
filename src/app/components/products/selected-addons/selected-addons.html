@@ -1,16 +1,28 @@
 <ul class="selected-addons">
-  <li *ngFor="let addon of addons()" class="selected-addons__chip">
-    <span>{{ addon.addonName }}</span>
-    <span>{{ addon.addonPrice | currency }}</span>
-    <button
-      *ngIf="interactive()"
-      type="button"
-      class="selected-addons__remove"
-      (click)="removed.emit(addon.addonId)"
-    >
-      ×
-    </button>
-  </li>
+  @for (addon of addons(); track addon.addonId) {
+    <li class="selected-addons__item">
+      <div class="selected-addons__info">
+        <span class="selected-addons__name">{{ addon.addonName }}</span>
+        <span class="selected-addons__price">{{ addon.addonPrice | currency }}</span>
+      </div>
 
-  <li *ngIf="addons().length === 0" class="selected-addons__empty">Sin extras</li>
+      @if (interactive()) {
+        <button
+          type="button"
+          class="selected-addons__remove"
+          (click)="removed.emit(addon.addonId)"
+          [attr.aria-label]="'Quitar ' + addon.addonName"
+        >
+          <svg viewBox="0 0 20 20" width="22" height="22" aria-hidden="true">
+            <circle cx="10" cy="10" r="9" fill="currentColor" />
+            <rect x="5.5" y="9" width="9" height="2" rx="1" fill="var(--color-white)" />
+          </svg>
+        </button>
+      }
+    </li>
+  }
+
+  @if (addons().length === 0) {
+    <li class="selected-addons__empty">Sin extras</li>
+  }
 </ul>

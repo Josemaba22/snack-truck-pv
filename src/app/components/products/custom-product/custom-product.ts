@@ -1,5 +1,5 @@
 import { Component, OnInit, computed, input, output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 
 import { ProductAddons } from '../product-addons/product-addons';
 import { SelectedAddons } from '../selected-addons/selected-addons';
@@ -10,7 +10,7 @@ import { AddonSummary } from '../../../models/ui/cart-item.ui';
 @Component({
   selector: 'app-custom-product',
   standalone: true,
-  imports: [CommonModule, ProductAddons, SelectedAddons],
+  imports: [CurrencyPipe, ProductAddons, SelectedAddons],
   templateUrl: './custom-product.html',
   styleUrl: './custom-product.css',
 })

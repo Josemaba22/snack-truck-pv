@@ -1,0 +1,186 @@
+:host,
+.custom-product {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.custom-product__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  justify-content: space-between;
+}
+
+.custom-product__back {
+  padding: 0.6rem 1.25rem;
+  background: var(--color-pink-bg);
+  border: 1px solid var(--color-pink-soft);
+  border-radius: 999px;
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.custom-product__back:hover {
+  background: var(--color-pink-soft);
+}
+
+.custom-product__title {
+  margin: 0;
+  color: var(--color-text);
+}
+
+.custom-product__header::after {
+  content: 'Nuevo Snack';
+  visibility: hidden;
+  aria-hidden: 'true';
+  pointer-events: none;
+}
+
+.custom-product__banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  background: var(--color-pink-bg);
+  border: 1px solid var(--color-pink-soft);
+  border-radius: var(--radius-lg);
+  margin-bottom: 1.5rem;
+}
+
+.custom-product__name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.custom-product__price {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-pink-strong);
+}
+
+.custom-product__loading {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 2rem 0;
+}
+
+.custom-product__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  gap: 1.5rem;
+}
+
+.custom-product__add-extra {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: center;
+  padding: 0.55rem 1.25rem 0.55rem 0.55rem;
+  background: var(--color-success-bg);
+  border: 1px solid var(--color-success);
+  border-radius: 999px;
+  color: var(--color-success-strong);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.custom-product__add-extra:hover {
+  background: #d9f5e3;
+}
+
+.custom-product__add-extra:active {
+  transform: scale(0.98);
+}
+
+.custom-product__add-extra-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-success);
+  color: var(--color-white);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.custom-product__footer {
+  margin-top: auto;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-pink-soft);
+}
+
+.custom-product__save {
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  background: var(--color-primary-bg);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.custom-product__save:hover {
+  background: #dbe9ff;
+}
+
+.custom-product__save:active {
+  transform: scale(0.99);
+}
+
+.custom-product__extras {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 1.5rem;
+  background: var(--color-pink-bg);
+  border: 1px solid var(--color-pink-soft);
+  border-radius: var(--radius-lg);
+}
+
+.custom-product__extras-title {
+  margin: 0 0 1rem;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.custom-product__cancel {
+  margin-top: 1.25rem;
+  align-self: center;
+  padding: 0.6rem 1.75rem;
+  background: var(--color-pink-soft);
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.custom-product__cancel:hover {
+  background: var(--color-pink-strong);
+  color: var(--color-white);
+}

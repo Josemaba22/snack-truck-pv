@@ -1,16 +1,15 @@
 import { Component, output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { CartService } from '../../../services/cart';
 import { Dialog } from '../../../shared/dialog/dialog';
-import { SelectedAddons } from '../../products/selected-addons/selected-addons';
 import { CartItemUi, cartItemTotal } from '../../../models/ui/cart-item.ui';
 
 @Component({
   selector: 'app-cart-panel',
   standalone: true,
-  imports: [CommonModule, FormsModule, Dialog, SelectedAddons],
+  imports: [CurrencyPipe, FormsModule, Dialog],
   templateUrl: './cart-panel.html',
   styleUrl: './cart-panel.css',
 })
@@ -21,6 +20,7 @@ export class CartPanel {
   checkout = output<void>();
 
   confirmCancelOpen = signal(false);
+  itemPendingRemoval = signal<CartItemUi | null>(null);
 
   constructor(readonly cart: CartService) {}
 
@@ -32,8 +32,20 @@ export class CartPanel {
     this.cart.setNotes(value);
   }
 
-  removeItem(cartItemId: string): void {
-    this.cart.removeItem(cartItemId);
+  openRemoveConfirm(item: CartItemUi): void {
+    this.itemPendingRemoval.set(item);
+  }
+
+  confirmRemove(): void {
+    const item = this.itemPendingRemoval();
+    if (item) {
+      this.cart.removeItem(item.cartItemId);
+    }
+    this.itemPendingRemoval.set(null);
+  }
+
+  dismissRemove(): void {
+    this.itemPendingRemoval.set(null);
   }
 
   openCancelConfirm(): void {

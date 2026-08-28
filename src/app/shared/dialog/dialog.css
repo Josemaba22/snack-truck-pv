@@ -1,0 +1,114 @@
+.app-dialog {
+  box-sizing: border-box;
+  width: min(90vw, 400px);
+  margin: auto;
+  padding: 2rem 1.75rem 1.75rem;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  box-shadow: 0 24px 48px rgba(17, 24, 39, 0.2);
+  color: var(--color-text);
+}
+
+.app-dialog::backdrop {
+  background: rgba(17, 24, 39, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+@keyframes app-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes app-dialog-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.app-dialog[open] {
+  animation: app-dialog-in 0.18s ease-out;
+}
+
+.app-dialog[open]::backdrop {
+  animation: app-dialog-backdrop-in 0.18s ease-out;
+}
+
+.app-dialog__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.app-dialog__title {
+  margin: 0 0 0.6rem;
+  text-align: center;
+  color: var(--color-text);
+  font-size: 1.15rem;
+}
+
+.app-dialog__message {
+  margin: 0 0 1.5rem;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.app-dialog__actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.app-dialog__cancel,
+.app-dialog__confirm {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.app-dialog__cancel {
+  background: var(--color-pink-bg);
+  border: 1.5px solid var(--color-pink-soft);
+  color: var(--color-text);
+}
+
+.app-dialog__cancel:hover {
+  background: var(--color-pink-soft);
+}
+
+.app-dialog__confirm {
+  background: var(--color-danger);
+  border: 1.5px solid var(--color-danger);
+  color: var(--color-white);
+}
+
+.app-dialog__confirm:hover {
+  background: #c31c1c;
+}
+
+.app-dialog__cancel:active,
+.app-dialog__confirm:active {
+  transform: scale(0.97);
+}

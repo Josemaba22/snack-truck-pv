@@ -3,53 +3,115 @@
     <h2>Resumen de orden</h2>
   </header>
 
-  <ul class="cart-panel__items">
-    <li *ngFor="let item of cart.items()" class="cart-panel__item">
-      <div class="cart-panel__item-header">
-        <span class="cart-panel__item-name">{{ item.product.name }}</span>
-        <span class="cart-panel__item-total">{{ lineTotal(item) | currency }}</span>
-      </div>
+  <div class="cart-panel__body">
+    @if (cart.isEmpty()) {
+      <p class="cart-panel__empty">Aún no has agregado ningún snack</p>
+    } @else {
+      <ul class="cart-panel__items">
+        @for (item of cart.items(); track item.cartItemId) {
+          <li class="cart-panel__item">
+            <div class="cart-panel__item-header">
+              <span class="cart-panel__item-name">{{ item.product.name }}</span>
+              <span class="cart-panel__item-price">{{ item.product.price | currency }}</span>
+            </div>
 
-      <app-selected-addons [addons]="item.selectedAddons" [interactive]="false"></app-selected-addons>
+            @if (item.selectedAddons.length > 0) {
+              <ul class="cart-panel__addons">
+                @for (addon of item.selectedAddons; track addon.addonId) {
+                  <li class="cart-panel__addon-row">
+                    <span>+ {{ addon.addonName }}</span>
+                    <span>{{ addon.addonPrice | currency }}</span>
+                  </li>
+                }
+              </ul>
+            }
 
-      <div class="cart-panel__item-actions">
-        <button type="button" class="cart-panel__edit" (click)="editItem.emit(item)" aria-label="Editar">
-          ✏️
-        </button>
-        <button
-          type="button"
-          class="cart-panel__remove"
-          (click)="removeItem(item.cartItemId)"
-          aria-label="Quitar"
-        >
-          🗑️
-        </button>
-      </div>
-    </li>
-  </ul>
+            <div class="cart-panel__item-footer">
+              <span class="cart-panel__item-subtotal">Subtotal: {{ lineTotal(item) | currency }}</span>
 
-  <p *ngIf="cart.isEmpty()" class="cart-panel__empty">Aún no has agregado ningún snack</p>
+              <div class="cart-panel__item-actions">
+                <button
+                  type="button"
+                  class="cart-panel__edit"
+                  (click)="editItem.emit(item)"
+                  aria-label="Editar snack"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="18"
+                    height="18"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  class="cart-panel__remove"
+                  (click)="openRemoveConfirm(item)"
+                  aria-label="Quitar snack"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="18"
+                    height="18"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M3 6h18"></path>
+                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                    <path d="M10 11v6"></path>
+                    <path d="M14 11v6"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+    }
 
-  <button type="button" class="cart-panel__add-snack" (click)="addSnack.emit()">+ Agregar Snack</button>
-
-  <label class="cart-panel__notes">
-    Notas:
-    <textarea [ngModel]="cart.notes()" (ngModelChange)="onNotesChange($event)"></textarea>
-  </label>
-
-  <div class="cart-panel__total">Total: {{ cart.total() | currency }}</div>
-
-  <div class="cart-panel__footer">
-    <button type="button" class="cart-panel__cancel" (click)="openCancelConfirm()">Cancelar Orden</button>
-    <button
-      type="button"
-      class="cart-panel__checkout"
-      [disabled]="cart.isEmpty()"
-      (click)="checkout.emit()"
-    >
-      Cobrar
+    <button type="button" class="cart-panel__add-snack" (click)="addSnack.emit()">
+      <span class="cart-panel__add-snack-icon" aria-hidden="true">+</span>
+      Agregar Snack
     </button>
+
+    <label class="cart-panel__notes">
+      Nota
+      <textarea
+        [ngModel]="cart.notes()"
+        (ngModelChange)="onNotesChange($event)"
+        placeholder="Escribe una nota para esta orden..."
+      ></textarea>
+    </label>
   </div>
+
+  <footer class="cart-panel__footer">
+    <div class="cart-panel__total">Total: {{ cart.total() | currency }}</div>
+
+    <div class="cart-panel__actions">
+      <button type="button" class="cart-panel__cancel" (click)="openCancelConfirm()">Cancelar Orden</button>
+      <button
+        type="button"
+        class="cart-panel__checkout"
+        [disabled]="cart.isEmpty()"
+        (click)="checkout.emit()"
+      >
+        Cobrar
+      </button>
+    </div>
+  </footer>
 </section>
 
 <app-dialog
@@ -60,4 +122,18 @@
   cancelLabel="Seguir con la orden"
   (confirmed)="confirmCancel()"
   (cancelled)="dismissCancel()"
+></app-dialog>
+
+<app-dialog
+  [open]="itemPendingRemoval() !== null"
+  title="Quitar snack"
+  [message]="
+    itemPendingRemoval()
+      ? '¿Seguro que deseas quitar ' + itemPendingRemoval()!.product.name + ' de la orden?'
+      : ''
+  "
+  confirmLabel="Sí, quitar"
+  cancelLabel="Cancelar"
+  (confirmed)="confirmRemove()"
+  (cancelled)="dismissRemove()"
 ></app-dialog>

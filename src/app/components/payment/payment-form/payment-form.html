@@ -3,45 +3,83 @@
     <h2>Cobro de la Orden</h2>
   </header>
 
-  <p class="payment-form__method">Efectivo</p>
+  <div class="payment-form__body">
+    <p class="payment-form__method">Efectivo</p>
 
-  <div class="payment-form__amounts">
-    <div class="payment-form__row">
-      <span>Total:</span>
-      <span>{{ total() | currency }}</span>
+    <div class="payment-form__amounts">
+      <div class="payment-form__row">
+        <span>Total:</span>
+        <span>{{ total() | currency }}</span>
+      </div>
+      <div class="payment-form__row">
+        <span>Falta Pagar:</span>
+        <span>{{ missingAmount() | currency }}</span>
+      </div>
+      <div class="payment-form__row">
+        <span>Cambio:</span>
+        <span>{{ change() | currency }}</span>
+      </div>
     </div>
-    <div class="payment-form__row">
-      <span>Falta Pagar:</span>
-      <span>{{ missingAmount() | currency }}</span>
-    </div>
-    <div class="payment-form__row">
-      <span>Cambio:</span>
-      <span>{{ change() | currency }}</span>
+
+    <input
+      class="payment-form__display"
+      type="text"
+      [value]="inputBuffer()"
+      placeholder="Ingresar Cantidad"
+      readonly
+    />
+
+    <div class="payment-form__pad">
+      <div class="payment-form__bills">
+        @for (bill of quickBills; track bill) {
+          <button type="button" class="payment-form__bill" (click)="addBill(bill)">Billete ${{ bill }}</button>
+        }
+      </div>
+
+      <div class="payment-form__keys">
+        @for (digit of digits; track digit) {
+          <button type="button" class="payment-form__key" (click)="appendDigit(digit)">{{ digit }}</button>
+        }
+        <button type="button" class="payment-form__key payment-form__key--zero" (click)="appendDigit('0')">0</button>
+        <button type="button" class="payment-form__key" (click)="appendDigit('.')">.</button>
+
+        <button
+          type="button"
+          class="payment-form__backspace"
+          (click)="backspace()"
+          aria-label="Borrar último dígito"
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"></path>
+            <path d="M14 10l-4 4"></path>
+            <path d="M10 10l4 4"></path>
+          </svg>
+        </button>
+
+        <button type="button" class="payment-form__confirm" [disabled]="!canConfirm()" (click)="openConfirmDialog()">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 12H5"></path>
+            <path d="M11 18l-6-6 6-6"></path>
+          </svg>
+          <span>Cobrar</span>
+        </button>
+      </div>
     </div>
   </div>
 
-  <input class="payment-form__display" type="text" [value]="inputBuffer()" placeholder="Ingresar Cantidad" readonly />
-
-  <div class="payment-form__pad">
-    <div class="payment-form__bills">
-      <button type="button" *ngFor="let bill of quickBills" (click)="addBill(bill)">
-        Billete ${{ bill }}
-      </button>
-    </div>
-
-    <div class="payment-form__keys">
-      <button type="button" *ngFor="let key of ['1','2','3','4','5','6','7','8','9']" (click)="appendDigit(key)">
-        {{ key }}
-      </button>
-      <button type="button" (click)="appendDigit('0')">0</button>
-      <button type="button" (click)="appendDigit('.')">.</button>
-      <button type="button" (click)="backspace()">⌫</button>
-    </div>
-
-    <button type="button" class="payment-form__confirm" [disabled]="!canConfirm()" (click)="confirm()">
-      Cobrar →
-    </button>
-  </div>
-
-  <p *ngIf="errorMessage()" class="payment-form__error">{{ errorMessage() }}</p>
+  @if (errorMessage()) {
+    <p class="payment-form__error">{{ errorMessage() }}</p>
+  }
 </section>
+
+<app-dialog
+  [open]="confirmPayOpen()"
+  tone="info"
+  message="¿Quieres cobrar el pedido?"
+  confirmLabel="Sí"
+  cancelLabel="No"
+  (confirmed)="confirm()"
+  (cancelled)="dismissConfirmDialog()"
+></app-dialog>

@@ -1,0 +1,228 @@
+:host,
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.payment-form__header {
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--color-pink-soft);
+}
+
+.payment-form__header h2 {
+  margin: 0;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.payment-form__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 0.5rem 0;
+}
+
+.payment-form__method {
+  margin: 0;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.payment-form__amounts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 420px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.payment-form__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.payment-form__display {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-pink-soft);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.payment-form__display::placeholder {
+  color: var(--color-text-muted);
+}
+
+.payment-form__display:focus {
+  outline: none;
+}
+
+.payment-form__pad {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.2fr 2.6fr;
+  gap: 1rem;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.payment-form__bills {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.payment-form__bill {
+  flex: 1;
+  min-height: 0;
+  padding: 0.5rem;
+  background: var(--color-pink-bg);
+  border: 1.5px solid var(--color-pink-soft);
+  border-radius: var(--radius-lg);
+  color: var(--color-text);
+  font-weight: 700;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.payment-form__bill:active {
+  transform: scale(0.97);
+}
+
+.payment-form__bill:nth-child(1) {
+  background: #a94f5e;
+  border-color: #8a3e4a;
+  color: var(--color-white);
+}
+
+.payment-form__bill:nth-child(2) {
+  background: #f4a999;
+  border-color: #e88f7c;
+  color: #6b3223;
+}
+
+.payment-form__bill:nth-child(3) {
+  background: #cdead0;
+  border-color: #a9d9ae;
+  color: #2f6b3a;
+}
+
+.payment-form__bill:nth-child(4) {
+  background: #aee0ea;
+  border-color: #8fcbd9;
+  color: #205f6c;
+}
+
+.payment-form__keys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) 1.3fr;
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.payment-form__key,
+.payment-form__backspace {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  background: var(--color-pink-bg);
+  border: 1.5px solid var(--color-pink-soft);
+  border-radius: var(--radius-lg);
+  color: var(--color-text);
+  font-weight: 700;
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.payment-form__key:active,
+.payment-form__backspace:active {
+  transform: scale(0.96);
+}
+
+.payment-form__backspace svg {
+  width: 28px;
+  height: 28px;
+}
+
+.payment-form__key--zero {
+  grid-column: span 2;
+}
+
+.payment-form__backspace {
+  grid-column: 4;
+  grid-row: 1;
+  background: #bcd0e0;
+  border-color: #9cb7cc;
+  color: #33495a;
+}
+
+.payment-form__confirm {
+  grid-column: 4;
+  grid-row: 2 / span 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: #35a75c;
+  border: none;
+  border-radius: var(--radius-lg);
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.payment-form__confirm svg {
+  width: 34px;
+  height: 34px;
+}
+
+.payment-form__confirm:hover:not(:disabled) {
+  background: #2e9151;
+}
+
+.payment-form__confirm:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.payment-form__confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.payment-form__error {
+  margin: 1rem auto 0;
+  text-align: center;
+  color: var(--color-danger);
+}

@@ -1,27 +1,31 @@
 import { Component, computed, output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 
+import { Dialog } from '../../../shared/dialog/dialog';
 import { CartService } from '../../../services/cart';
 import { OrdersApiService } from '../../../services/orders-api';
 import { OrdersStore } from '../../../services/orders-store';
 import { OrderRequest } from '../../../models/api/order.api';
 
 const QUICK_BILLS = [50, 100, 200, 500];
+const KEY_DIGITS = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 @Component({
   selector: 'app-payment-form',
-  imports: [CommonModule],
+  imports: [CurrencyPipe, Dialog],
   templateUrl: './payment-form.html',
   styleUrl: './payment-form.css',
 })
 export class PaymentForm {
   readonly quickBills = QUICK_BILLS;
+  readonly digits = KEY_DIGITS;
 
   paid = output<void>();
 
   inputBuffer = signal('');
   submitting = signal(false);
   errorMessage = signal<string | null>(null);
+  confirmPayOpen = signal(false);
 
   readonly total = computed(() => this.cart.total());
 
@@ -58,7 +62,20 @@ export class PaymentForm {
     this.inputBuffer.set(String(next));
   }
 
+  openConfirmDialog(): void {
+    if (!this.canConfirm()) {
+      return;
+    }
+    this.confirmPayOpen.set(true);
+  }
+
+  dismissConfirmDialog(): void {
+    this.confirmPayOpen.set(false);
+  }
+
   confirm(): void {
+    this.confirmPayOpen.set(false);
+
     if (!this.canConfirm()) {
       return;
     }

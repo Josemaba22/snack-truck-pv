@@ -13,6 +13,7 @@ export class Dialog {
   message = input('');
   confirmLabel = input('Confirmar');
   cancelLabel = input('Cancelar');
+  tone = input<'danger' | 'info'>('danger');
 
   confirmed = output<void>();
   cancelled = output<void>();

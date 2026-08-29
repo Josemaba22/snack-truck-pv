@@ -1,4 +1,4 @@
-<dialog #dialogEl class="app-dialog" (cancel)="onCancel()">
+<dialog #dialogEl class="app-dialog" [class.app-dialog--info]="tone() === 'info'" (cancel)="onCancel()">
   <div class="app-dialog__icon" aria-hidden="true">
     <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="9"></circle>

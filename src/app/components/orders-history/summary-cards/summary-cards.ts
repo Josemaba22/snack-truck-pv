@@ -1,11 +1,11 @@
 import { Component, computed, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 
 import { OrderResponse } from '../../../models/api/order.api';
 
 @Component({
   selector: 'app-summary-cards',
-  imports: [CommonModule],
+  imports: [CurrencyPipe],
   templateUrl: './summary-cards.html',
   styleUrl: './summary-cards.css',
 })

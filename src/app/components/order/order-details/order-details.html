@@ -4,16 +4,20 @@
   </p>
 
   <ul class="order-details__items">
-    <li *ngFor="let item of order().items" class="order-details__item">
-      <div class="order-details__item-header">
-        <span>{{ item.quantity }} {{ item.productName }}</span>
-        <span>{{ item.subtotal | currency }}</span>
-      </div>
-      <app-selected-addons [addons]="toAddonSummaries(item.addons)" [interactive]="false"></app-selected-addons>
-    </li>
+    @for (item of order().items; track item.id) {
+      <li class="order-details__item">
+        <div class="order-details__item-header">
+          <span>{{ item.quantity }} {{ item.productName }}</span>
+          <span>{{ item.subtotal | currency }}</span>
+        </div>
+        <app-selected-addons [addons]="toAddonSummaries(item.addons)" [interactive]="false"></app-selected-addons>
+      </li>
+    }
   </ul>
 
-  <p *ngIf="order().notes" class="order-details__notes">Notas: {{ order().notes }}</p>
+  @if (order().notes) {
+    <p class="order-details__notes">Notas: {{ order().notes }}</p>
+  }
 
   <div class="order-details__total">Total: {{ order().total | currency }}</div>
 </div>

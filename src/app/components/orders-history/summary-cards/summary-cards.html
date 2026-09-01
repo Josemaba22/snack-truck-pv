@@ -1,11 +1,11 @@
 <div class="summary-cards">
   <div class="summary-cards__card">
-    <span>Órdenes hoy</span>
-    <strong>{{ count() }}</strong>
+    <span class="summary-cards__label">Órdenes hoy</span>
+    <strong class="summary-cards__value">{{ count() }}</strong>
   </div>
 
   <div class="summary-cards__card">
-    <span>Ventas totales</span>
-    <strong>{{ totalSales() | currency }}</strong>
+    <span class="summary-cards__label">Ventas totales</span>
+    <strong class="summary-cards__value">{{ totalSales() | currency }}</strong>
   </div>
 </div>

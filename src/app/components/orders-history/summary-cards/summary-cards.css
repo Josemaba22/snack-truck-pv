@@ -1,0 +1,29 @@
+.summary-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.summary-cards__card {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 1.25rem;
+  background: var(--color-white);
+  border: 1.5px solid var(--color-pink-soft);
+  border-radius: var(--radius-lg);
+}
+
+.summary-cards__label {
+  color: var(--color-text-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.summary-cards__value {
+  color: var(--color-text);
+  font-size: 1.6rem;
+  font-weight: 700;
+}

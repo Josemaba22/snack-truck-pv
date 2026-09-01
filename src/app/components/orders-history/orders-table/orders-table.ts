@@ -1,11 +1,11 @@
 import { Component, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 import { OrderResponse } from '../../../models/api/order.api';
 
 @Component({
   selector: 'app-orders-table',
-  imports: [CommonModule],
+  imports: [CurrencyPipe, DatePipe],
   templateUrl: './orders-table.html',
   styleUrl: './orders-table.css',
 })

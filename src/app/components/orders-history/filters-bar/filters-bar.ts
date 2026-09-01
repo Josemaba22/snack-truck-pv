@@ -1,10 +1,9 @@
 import { Component, output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-filters-bar',
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './filters-bar.html',
   styleUrl: './filters-bar.css',
 })

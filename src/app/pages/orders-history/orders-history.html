@@ -3,14 +3,24 @@
     <h2>Ordenes entregadas</h2>
   </header>
 
-  <app-summary-cards [orders]="ordersStore.deliveredOrders()"></app-summary-cards>
+  <div class="orders-history__body">
+    <app-summary-cards [orders]="ordersStore.deliveredOrders()"></app-summary-cards>
 
-  <app-filters-bar (filtered)="onFiltered($event)"></app-filters-bar>
+    <app-filters-bar (filtered)="onFiltered($event)"></app-filters-bar>
 
-  <app-orders-table [orders]="filteredOrders()" (viewOrder)="onViewOrder($event)"></app-orders-table>
-
-  <div *ngIf="selectedOrder() as order" class="orders-history__details">
-    <button type="button" (click)="closeDetails()">Cerrar</button>
-    <app-order-details [order]="order"></app-order-details>
+    <app-orders-table [orders]="filteredOrders()" (viewOrder)="onViewOrder($event)"></app-orders-table>
   </div>
 </section>
+
+@if (selectedOrder(); as order) {
+  <div class="orders-history__overlay" (click)="closeDetails()">
+    <div class="orders-history__details" (click)="$event.stopPropagation()">
+      <div class="orders-history__details-header">
+        <h3># Orden {{ order.orderNumber }}</h3>
+        <button type="button" class="orders-history__close" (click)="closeDetails()" aria-label="Cerrar">✕</button>
+      </div>
+
+      <app-order-details [order]="order"></app-order-details>
+    </div>
+  </div>
+}

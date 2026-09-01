@@ -1,5 +1,4 @@
 import { Component, computed, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { SummaryCards } from '../../components/orders-history/summary-cards/summary-cards';
 import { FiltersBar } from '../../components/orders-history/filters-bar/filters-bar';
@@ -10,7 +9,7 @@ import { OrderResponse } from '../../models/api/order.api';
 
 @Component({
   selector: 'app-orders-history',
-  imports: [CommonModule, SummaryCards, FiltersBar, OrdersTable, OrderDetails],
+  imports: [SummaryCards, FiltersBar, OrdersTable, OrderDetails],
   templateUrl: './orders-history.html',
   styleUrl: './orders-history.css',
 })

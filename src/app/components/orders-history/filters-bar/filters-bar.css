@@ -1,0 +1,51 @@
+.filters-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.filters-bar__input {
+  flex: 1;
+  min-width: 200px;
+  max-width: 320px;
+  padding: 0.65rem 1rem;
+  background: var(--color-white);
+  border: 1.5px solid var(--color-pink-soft);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.filters-bar__input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.filters-bar__input:focus {
+  outline: none;
+  border-color: var(--color-pink-strong);
+}
+
+.filters-bar__button {
+  padding: 0.7rem 1.75rem;
+  background: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.filters-bar__button:hover {
+  background: #1d4fd1;
+}
+
+.filters-bar__button:active {
+  transform: scale(0.98);
+}

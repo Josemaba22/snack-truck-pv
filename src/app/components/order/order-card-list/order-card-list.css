@@ -1,0 +1,46 @@
+:host,
+.order-card-list {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: 1rem;
+}
+
+.order-card-list__empty {
+  margin: auto;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.order-card-list__grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1rem;
+  touch-action: pan-y;
+}
+
+.order-card-list__dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.order-card-list__dot {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  background: var(--color-white);
+  border: 1.5px solid var(--color-pink-strong);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.order-card-list__dot--active {
+  background: var(--color-pink-strong);
+}

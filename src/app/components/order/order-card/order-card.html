@@ -1,22 +1,37 @@
-<article class="order-card">
-  <header class="order-card__header" (click)="toggleDetails()">
-    <span class="order-card__number">ORD-{{ order().orderNumber }}</span>
-    <span class="order-card__time">{{ relativeTime() }}</span>
-    <span class="order-card__status">{{ statusLabel() }}</span>
+<article
+  class="order-card"
+  [class.order-card--pending]="order().status === 'PENDING'"
+  [class.order-card--in-progress]="order().status === 'IN_PROGRESS'"
+  [class.order-card--ready]="order().status === 'READY'"
+>
+  <header class="order-card__header">
+    <span class="order-card__number">Orden #{{ order().orderNumber }}</span>
+    <span class="order-card__time">{{ order().createdAt | date: 'shortTime' }} ({{ relativeTime() }})</span>
   </header>
 
-  <p class="order-card__summary">{{ itemsSummary() }}</p>
+  <span class="order-card__status">{{ statusLabel() }}</span>
 
-  <div *ngIf="detailsOpen()" class="order-card__details">
-    <app-order-details [order]="order()"></app-order-details>
-  </div>
+  <ul class="order-card__items">
+    @for (item of order().items; track item.id) {
+      <li class="order-card__item">
+        <span class="order-card__item-line">{{ item.quantity }} {{ item.productName }}</span>
 
-  <button
-    *ngIf="actionLabel() as label"
-    type="button"
-    class="order-card__advance"
-    (click)="onAdvance()"
-  >
-    {{ label }}
-  </button>
+        @if (item.addons.length > 0) {
+          <ul class="order-card__addons">
+            @for (addon of item.addons; track addon.id) {
+              <li>+ {{ addon.addonName }}</li>
+            }
+          </ul>
+        }
+      </li>
+    }
+  </ul>
+
+  @if (order().notes) {
+    <p class="order-card__notes">- {{ order().notes }}</p>
+  }
+
+  @if (actionLabel(); as label) {
+    <button type="button" class="order-card__advance" (click)="onAdvance()">{{ label }}</button>
+  }
 </article>

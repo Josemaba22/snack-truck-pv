@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { OrderCardList } from '../../components/order/order-card-list/order-card-list';
 import { OrdersStore } from '../../services/orders-store';
@@ -8,7 +7,7 @@ import { OrderStatus } from '../../models/api/order.api';
 
 @Component({
   selector: 'app-kitchen',
-  imports: [CommonModule, OrderCardList],
+  imports: [OrderCardList],
   templateUrl: './kitchen.html',
   styleUrl: './kitchen.css',
 })

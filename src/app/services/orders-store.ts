@@ -15,7 +15,9 @@ export class OrdersStore {
   readonly orders = this.ordersSignal.asReadonly();
 
   readonly activeOrders = computed(() =>
-    this.ordersSignal().filter((order) => ACTIVE_STATUSES.has(order.status)),
+    this.ordersSignal()
+      .filter((order) => ACTIVE_STATUSES.has(order.status))
+      .sort((a, b) => a.orderNumber - b.orderNumber),
   );
 
   readonly deliveredOrders = computed(() =>

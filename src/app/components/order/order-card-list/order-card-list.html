@@ -1,9 +1,25 @@
 <div class="order-card-list">
-  <app-order-card
-    *ngFor="let order of orders()"
-    [order]="order"
-    (advance)="advance.emit($event)"
-  ></app-order-card>
+  @if (orders().length === 0) {
+    <p class="order-card-list__empty">No hay órdenes por mostrar</p>
+  } @else {
+    <div class="order-card-list__grid" (pointerdown)="onSwipeStart($event)" (pointerup)="onSwipeEnd($event)">
+      @for (order of pagedOrders(); track order.id) {
+        <app-order-card [order]="order" (advance)="advance.emit($event)"></app-order-card>
+      }
+    </div>
 
-  <p *ngIf="orders().length === 0" class="order-card-list__empty">No hay órdenes por mostrar</p>
+    @if (pageCount() > 1) {
+      <div class="order-card-list__dots">
+        @for (page of pages(); track page) {
+          <button
+            type="button"
+            class="order-card-list__dot"
+            [class.order-card-list__dot--active]="page === currentPage()"
+            [attr.aria-label]="'Ir a la página ' + (page + 1)"
+            (click)="goToPage(page)"
+          ></button>
+        }
+      </div>
+    }
+  }
 </div>

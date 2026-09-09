@@ -10,7 +10,18 @@
           <span>{{ item.quantity }} {{ item.productName }}</span>
           <span>{{ item.subtotal | currency }}</span>
         </div>
-        <app-selected-addons [addons]="toAddonSummaries(item.addons)" [interactive]="false"></app-selected-addons>
+        <app-selected-ingredients
+          [ingredients]="addedIngredients(item.ingredients)"
+          [interactive]="false"
+        ></app-selected-ingredients>
+
+        @if (removedIngredients(item.ingredients).length > 0) {
+          <ul class="order-details__removed">
+            @for (ingredient of removedIngredients(item.ingredients); track ingredient.ingredientId) {
+              <li>Sin {{ ingredient.ingredientName }}</li>
+            }
+          </ul>
+        }
       </li>
     }
   </ul>

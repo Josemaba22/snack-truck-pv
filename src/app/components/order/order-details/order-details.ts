@@ -1,25 +1,37 @@
 import { Component, input } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 
-import { OrderResponse, OrderDetailAddonResponse } from '../../../models/api/order.api';
-import { AddonSummary } from '../../../models/ui/cart-item.ui';
-import { SelectedAddons } from '../../products/selected-addons/selected-addons';
+import { OrderResponse, OrderDetailIngredientResponse } from '../../../models/api/order.api';
+import { IngredientSummary } from '../../../models/ui/cart-item.ui';
+import { SelectedIngredients } from '../../products/selected-ingredients/selected-ingredients';
 
 @Component({
   selector: 'app-order-details',
   standalone: true,
-  imports: [CurrencyPipe, SelectedAddons],
+  imports: [CurrencyPipe, SelectedIngredients],
   templateUrl: './order-details.html',
   styleUrl: './order-details.css',
 })
 export class OrderDetails {
   order = input.required<OrderResponse>();
 
-  toAddonSummaries(addons: OrderDetailAddonResponse[]): AddonSummary[] {
-    return addons.map((addon) => ({
-      addonId: addon.addonId,
-      addonName: addon.addonName,
-      addonPrice: addon.unitPrice,
-    }));
+  addedIngredients(ingredients: OrderDetailIngredientResponse[]): IngredientSummary[] {
+    return ingredients
+      .filter((ingredient) => ingredient.action === 'ADDED')
+      .map((ingredient) => ({
+        ingredientId: ingredient.ingredientId,
+        ingredientName: ingredient.ingredientName,
+        ingredientPrice: ingredient.unitPrice,
+      }));
+  }
+
+  removedIngredients(ingredients: OrderDetailIngredientResponse[]): IngredientSummary[] {
+    return ingredients
+      .filter((ingredient) => ingredient.action === 'REMOVED')
+      .map((ingredient) => ({
+        ingredientId: ingredient.ingredientId,
+        ingredientName: ingredient.ingredientName,
+        ingredientPrice: ingredient.unitPrice,
+      }));
   }
 }

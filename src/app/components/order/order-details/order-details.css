@@ -40,6 +40,15 @@
   color: var(--color-text);
 }
 
+.order-details__removed {
+  margin: 0;
+  padding: 0 0 0 1rem;
+  list-style: none;
+  color: var(--color-danger);
+  font-size: 0.85rem;
+  text-decoration: line-through;
+}
+
 .order-details__notes {
   margin: 0;
   padding: 0.75rem 1rem;

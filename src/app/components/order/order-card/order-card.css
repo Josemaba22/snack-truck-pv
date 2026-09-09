@@ -85,7 +85,7 @@
   color: var(--color-text);
 }
 
-.order-card__addons {
+.order-card__ingredients {
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
@@ -94,6 +94,10 @@
   list-style: none;
   color: var(--color-text-muted);
   font-size: 0.85rem;
+}
+
+.order-card__ingredient--removed {
+  text-decoration: line-through;
 }
 
 .order-card__notes {

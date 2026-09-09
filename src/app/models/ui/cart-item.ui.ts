@@ -1,11 +1,11 @@
 import { ProductResponse } from '../api/product.api';
 
-export interface AddonSummary {
-  readonly addonId: string;
+export interface IngredientSummary {
+  readonly ingredientId: string;
 
-  readonly addonName: string;
+  readonly ingredientName: string;
 
-  readonly addonPrice: number;
+  readonly ingredientPrice: number;
 }
 
 export interface CartItemUi {
@@ -13,9 +13,14 @@ export interface CartItemUi {
 
   readonly product: ProductResponse;
 
-  readonly selectedAddons: AddonSummary[];
+  readonly addedIngredients: IngredientSummary[];
+
+  readonly removedIngredients: IngredientSummary[];
 }
 
 export function cartItemTotal(item: CartItemUi): number {
-  return item.product.price + item.selectedAddons.reduce((sum, addon) => sum + addon.addonPrice, 0);
+  return (
+    item.product.price +
+    item.addedIngredients.reduce((sum, ingredient) => sum + ingredient.ingredientPrice, 0)
+  );
 }

@@ -2,12 +2,16 @@ export type OrderStatus = 'PENDING' | 'IN_PROGRESS' | 'READY' | 'COMPLETED';
 
 export type PaymentMethod = 'CASH' | 'CARD' | 'TRANSFER';
 
+export type IngredientAction = 'ADDED' | 'REMOVED';
+
 export interface OrderItemRequest {
   readonly productId: string;
 
   readonly quantity: number;
 
-  readonly selectedAddonIds: string[];
+  readonly extraIngredientIds: string[];
+
+  readonly removedIngredientIds: string[];
 }
 
 export interface OrderRequest {
@@ -22,14 +26,16 @@ export interface OrderStatusUpdateRequest {
   readonly status: OrderStatus;
 }
 
-export interface OrderDetailAddonResponse {
+export interface OrderDetailIngredientResponse {
   readonly id: string;
 
-  readonly addonId: string;
+  readonly ingredientId: string;
 
-  readonly addonName: string;
+  readonly ingredientName: string;
 
   readonly unitPrice: number;
+
+  readonly action: IngredientAction;
 }
 
 export interface OrderDetailResponse {
@@ -43,7 +49,7 @@ export interface OrderDetailResponse {
 
   readonly unitPrice: number;
 
-  readonly addons: OrderDetailAddonResponse[];
+  readonly ingredients: OrderDetailIngredientResponse[];
 
   readonly subtotal: number;
 }

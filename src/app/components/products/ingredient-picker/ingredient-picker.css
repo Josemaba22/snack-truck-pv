@@ -5,7 +5,7 @@
   min-height: 0;
 }
 
-.product-addons {
+.ingredient-picker {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   align-content: start;
@@ -18,7 +18,7 @@
   min-height: 0;
 }
 
-.product-addons__item {
+.ingredient-picker__item {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -38,28 +38,28 @@
     color 0.15s ease;
 }
 
-.product-addons__item:hover {
+.ingredient-picker__item:hover {
   border-color: var(--color-pink-strong);
 }
 
-.product-addons__item--selected {
+.ingredient-picker__item--selected {
   background: var(--color-pink-strong);
   border-color: var(--color-pink-strong);
   color: var(--color-white);
 }
 
-.product-addons__name {
+.ingredient-picker__name {
   font-size: 0.95rem;
   font-weight: 500;
 }
 
-.product-addons__price {
+.ingredient-picker__price {
   font-size: 0.9rem;
   font-weight: 600;
   white-space: nowrap;
 }
 
-.product-addons__empty {
+.ingredient-picker__empty {
   grid-column: 1 / -1;
   padding: 2rem 1rem;
   text-align: center;

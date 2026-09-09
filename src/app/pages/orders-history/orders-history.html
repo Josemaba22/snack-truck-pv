@@ -8,7 +8,10 @@
 
     <app-filters-bar (filtered)="onFiltered($event)"></app-filters-bar>
 
-    <app-orders-table [orders]="filteredOrders()" (viewOrder)="onViewOrder($event)"></app-orders-table>
+    <app-orders-table
+      [orders]="filteredOrders()"
+      (viewOrder)="onViewOrder($event)"
+    ></app-orders-table>
   </div>
 </section>
 
@@ -17,7 +20,14 @@
     <div class="orders-history__details" (click)="$event.stopPropagation()">
       <div class="orders-history__details-header">
         <h3># Orden {{ order.orderNumber }}</h3>
-        <button type="button" class="orders-history__close" (click)="closeDetails()" aria-label="Cerrar">✕</button>
+        <button
+          type="button"
+          class="orders-history__close"
+          (click)="closeDetails()"
+          aria-label="Cerrar"
+        >
+          ✕
+        </button>
       </div>
 
       <app-order-details [order]="order"></app-order-details>

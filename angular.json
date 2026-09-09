@@ -60,10 +60,7 @@
               "buildTarget": "markesitas-v2:build:development"
             }
           },
-          "defaultConfiguration": "development",
-          "options": {
-            "allowedHosts": ["uniformed-ditto-fidgety.ngrok-free.dev"]
-          }
+          "defaultConfiguration": "development"
         },
         "test": {
           "builder": "@angular/build:unit-test"

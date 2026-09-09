@@ -10,26 +10,43 @@
   </div>
 
   @if (loading()) {
-    <p class="custom-product__loading">Cargando extras...</p>
+    <p class="custom-product__loading">Cargando receta...</p>
   } @else if (extrasOpen()) {
     <div class="custom-product__extras">
       <h3 class="custom-product__extras-title">Extras</h3>
 
-      <app-product-addons
-        [addons]="availableAddons()"
-        [selectedIds]="selectedIds()"
-        (toggled)="onAddonToggled($event)"
-      ></app-product-addons>
+      <app-ingredient-picker
+        [ingredients]="extraIngredients()"
+        [selectedIds]="addedExtraIds()"
+        emptyMessage="Este producto no tiene extras disponibles"
+        (toggled)="onExtraToggled($event)"
+      ></app-ingredient-picker>
 
       <button type="button" class="custom-product__cancel" (click)="toggleExtras()">Cancelar</button>
     </div>
   } @else {
     <div class="custom-product__body">
-      <app-selected-addons
-        [addons]="selectedAddons()"
-        [interactive]="true"
-        (removed)="onAddonRemoved($event)"
-      ></app-selected-addons>
+      @if (baseIngredients().length > 0) {
+        <div class="custom-product__ingredients">
+          <h3 class="custom-product__ingredients-title">Ingredientes</h3>
+          <p class="custom-product__ingredients-hint">Toca uno para quitarlo</p>
+
+          <app-ingredient-picker
+            [ingredients]="baseIngredients()"
+            [selectedIds]="includedBaseIds()"
+            [showPrice]="false"
+            (toggled)="onBaseIngredientToggled($event)"
+          ></app-ingredient-picker>
+        </div>
+      }
+
+      @if (addedExtras().length > 0) {
+        <app-selected-ingredients
+          [ingredients]="addedExtras()"
+          [interactive]="true"
+          (removed)="onExtraRemoved($event)"
+        ></app-selected-ingredients>
+      }
 
       <button type="button" class="custom-product__add-extra" (click)="toggleExtras()">
         <span class="custom-product__add-extra-icon" aria-hidden="true">+</span>

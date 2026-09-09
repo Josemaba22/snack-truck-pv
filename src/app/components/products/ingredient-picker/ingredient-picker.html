@@ -1,0 +1,21 @@
+<ul class="ingredient-picker">
+  @for (ingredient of ingredients(); track ingredient.ingredientId) {
+    <li>
+      <button
+        type="button"
+        class="ingredient-picker__item"
+        [class.ingredient-picker__item--selected]="isSelected(ingredient)"
+        (click)="toggled.emit(ingredient)"
+      >
+        <span class="ingredient-picker__name">{{ ingredient.ingredientName }}</span>
+        @if (showPrice()) {
+          <span class="ingredient-picker__price">{{ ingredient.ingredientPrice | currency }}</span>
+        }
+      </button>
+    </li>
+  }
+
+  @if (ingredients().length === 0) {
+    <li class="ingredient-picker__empty">{{ emptyMessage() }}</li>
+  }
+</ul>

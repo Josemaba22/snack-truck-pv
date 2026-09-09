@@ -1,6 +1,6 @@
 import { Injectable, computed, signal } from '@angular/core';
 
-import { CartItemUi, cartItemTotal, AddonSummary } from '../models/ui/cart-item.ui';
+import { CartItemUi, cartItemTotal, IngredientSummary } from '../models/ui/cart-item.ui';
 import { ProductResponse } from '../models/api/product.api';
 
 @Injectable({ providedIn: 'root' })
@@ -17,18 +17,29 @@ export class CartService {
 
   readonly isEmpty = computed(() => this.itemsSignal().length === 0);
 
-  addProduct(product: ProductResponse, addons: AddonSummary[]): void {
+  addProduct(
+    product: ProductResponse,
+    addedIngredients: IngredientSummary[],
+    removedIngredients: IngredientSummary[],
+  ): void {
     const item: CartItemUi = {
       cartItemId: crypto.randomUUID(),
       product,
-      selectedAddons: addons,
+      addedIngredients,
+      removedIngredients,
     };
     this.itemsSignal.update((items) => [...items, item]);
   }
 
-  updateAddons(cartItemId: string, addons: AddonSummary[]): void {
+  updateIngredients(
+    cartItemId: string,
+    addedIngredients: IngredientSummary[],
+    removedIngredients: IngredientSummary[],
+  ): void {
     this.itemsSignal.update((items) =>
-      items.map((item) => (item.cartItemId === cartItemId ? { ...item, selectedAddons: addons } : item)),
+      items.map((item) =>
+        item.cartItemId === cartItemId ? { ...item, addedIngredients, removedIngredients } : item,
+      ),
     );
   }
 

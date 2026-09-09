@@ -15,12 +15,17 @@
               <span class="cart-panel__item-price">{{ item.product.price | currency }}</span>
             </div>
 
-            @if (item.selectedAddons.length > 0) {
-              <ul class="cart-panel__addons">
-                @for (addon of item.selectedAddons; track addon.addonId) {
-                  <li class="cart-panel__addon-row">
-                    <span>+ {{ addon.addonName }}</span>
-                    <span>{{ addon.addonPrice | currency }}</span>
+            @if (item.addedIngredients.length > 0 || item.removedIngredients.length > 0) {
+              <ul class="cart-panel__ingredients">
+                @for (ingredient of item.addedIngredients; track ingredient.ingredientId) {
+                  <li class="cart-panel__ingredient-row">
+                    <span>+ {{ ingredient.ingredientName }}</span>
+                    <span>{{ ingredient.ingredientPrice | currency }}</span>
+                  </li>
+                }
+                @for (ingredient of item.removedIngredients; track ingredient.ingredientId) {
+                  <li class="cart-panel__ingredient-row cart-panel__ingredient-row--removed">
+                    <span>Sin {{ ingredient.ingredientName }}</span>
                   </li>
                 }
               </ul>

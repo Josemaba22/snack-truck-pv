@@ -4,7 +4,8 @@
   <app-custom-product
     *ngSwitchCase="'personalize'"
     [product]="selectedProduct()!"
-    [initialAddons]="editingInitialAddons()"
+    [initialAddedIngredients]="editingInitialAddedIngredients()"
+    [initialRemovedIngredients]="editingInitialRemovedIngredients()"
     (back)="onPersonalizeBack()"
     (saved)="onSnackSaved($event)"
   ></app-custom-product>

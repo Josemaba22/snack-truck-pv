@@ -1,0 +1,30 @@
+<ul class="selected-ingredients">
+  @for (ingredient of ingredients(); track ingredient.ingredientId) {
+    <li class="selected-ingredients__item">
+      <div class="selected-ingredients__info">
+        <span class="selected-ingredients__name">{{ ingredient.ingredientName }}</span>
+        @if (showPrice()) {
+          <span class="selected-ingredients__price">{{ ingredient.ingredientPrice | currency }}</span>
+        }
+      </div>
+
+      @if (interactive()) {
+        <button
+          type="button"
+          class="selected-ingredients__remove"
+          (click)="removed.emit(ingredient.ingredientId)"
+          [attr.aria-label]="'Quitar ' + ingredient.ingredientName"
+        >
+          <svg viewBox="0 0 20 20" width="22" height="22" aria-hidden="true">
+            <circle cx="10" cy="10" r="9" fill="currentColor" />
+            <rect x="5.5" y="9" width="9" height="2" rx="1" fill="var(--color-white)" />
+          </svg>
+        </button>
+      }
+    </li>
+  }
+
+  @if (ingredients().length === 0) {
+    <li class="selected-ingredients__empty">{{ emptyMessage() }}</li>
+  }
+</ul>

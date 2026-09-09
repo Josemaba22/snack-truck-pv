@@ -1,51 +1,90 @@
 import { Component, OnInit, computed, input, output, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 
-import { ProductAddons } from '../product-addons/product-addons';
-import { SelectedAddons } from '../selected-addons/selected-addons';
-import { ProductDetailsApiService } from '../../../services/product-details-api';
+import { IngredientPicker } from '../ingredient-picker/ingredient-picker';
+import { SelectedIngredients } from '../selected-ingredients/selected-ingredients';
+import { ProductRecipeDetailsApiService } from '../../../services/product-recipe-details-api';
 import { ProductResponse } from '../../../models/api/product.api';
-import { AddonSummary } from '../../../models/ui/cart-item.ui';
+import { IngredientSummary } from '../../../models/ui/cart-item.ui';
+
+export interface CustomProductSaved {
+  readonly addedIngredients: IngredientSummary[];
+
+  readonly removedIngredients: IngredientSummary[];
+}
 
 @Component({
   selector: 'app-custom-product',
   standalone: true,
-  imports: [CurrencyPipe, ProductAddons, SelectedAddons],
+  imports: [CurrencyPipe, IngredientPicker, SelectedIngredients],
   templateUrl: './custom-product.html',
   styleUrl: './custom-product.css',
 })
 export class CustomProduct implements OnInit {
   product = input.required<ProductResponse>();
-  initialAddons = input<AddonSummary[]>([]);
+  initialAddedIngredients = input<IngredientSummary[]>([]);
+  initialRemovedIngredients = input<IngredientSummary[]>([]);
 
   back = output<void>();
-  saved = output<AddonSummary[]>();
+  saved = output<CustomProductSaved>();
 
-  availableAddons = signal<AddonSummary[]>([]);
-  selectedAddons = signal<AddonSummary[]>([]);
+  baseIngredients = signal<IngredientSummary[]>([]);
+  extraIngredients = signal<IngredientSummary[]>([]);
+  includedBaseIds = signal<Set<string>>(new Set());
+  addedExtras = signal<IngredientSummary[]>([]);
   extrasOpen = signal(false);
   loading = signal(true);
 
-  readonly selectedIds = computed(() => new Set(this.selectedAddons().map((addon) => addon.addonId)));
+  readonly addedExtraIds = computed(
+    () => new Set(this.addedExtras().map((ingredient) => ingredient.ingredientId)),
+  );
 
-  constructor(private readonly productDetailsApi: ProductDetailsApiService) {}
+  readonly removedBaseIngredients = computed(() =>
+    this.baseIngredients().filter(
+      (ingredient) => !this.includedBaseIds().has(ingredient.ingredientId),
+    ),
+  );
+
+  constructor(private readonly productRecipeDetailsApi: ProductRecipeDetailsApiService) {}
 
   ngOnInit(): void {
-    this.selectedAddons.set(this.initialAddons());
+    this.addedExtras.set(this.initialAddedIngredients());
+    const initiallyRemovedIds = new Set(
+      this.initialRemovedIngredients().map((ingredient) => ingredient.ingredientId),
+    );
 
-    this.productDetailsApi.getByProduct(this.product().id).subscribe({
+    this.productRecipeDetailsApi.getByProduct(this.product().id).subscribe({
       next: (details) => {
-        this.availableAddons.set(
-          details.map((detail) => ({
-            addonId: detail.addonId,
-            addonName: detail.addonName,
-            addonPrice: detail.addonPrice,
-          })),
+        const base: IngredientSummary[] = [];
+        const extras: IngredientSummary[] = [];
+
+        for (const detail of details) {
+          const summary: IngredientSummary = {
+            ingredientId: detail.ingredientId,
+            ingredientName: detail.ingredientName,
+            ingredientPrice: detail.ingredientPrice,
+          };
+
+          if (detail.isBase) {
+            base.push(summary);
+          } else {
+            extras.push(summary);
+          }
+        }
+
+        this.baseIngredients.set(base);
+        this.extraIngredients.set(extras);
+        this.includedBaseIds.set(
+          new Set(
+            base
+              .map((ingredient) => ingredient.ingredientId)
+              .filter((id) => !initiallyRemovedIds.has(id)),
+          ),
         );
         this.loading.set(false);
       },
       error: (err) => {
-        console.error('No se pudieron cargar los extras del producto', err);
+        console.error('No se pudo cargar la receta del producto', err);
         this.loading.set(false);
       },
     });
@@ -55,18 +94,37 @@ export class CustomProduct implements OnInit {
     this.extrasOpen.update((value) => !value);
   }
 
-  onAddonToggled(addon: AddonSummary): void {
-    this.selectedAddons.update((current) => {
-      const exists = current.some((a) => a.addonId === addon.addonId);
-      return exists ? current.filter((a) => a.addonId !== addon.addonId) : [...current, addon];
+  onBaseIngredientToggled(ingredient: IngredientSummary): void {
+    this.includedBaseIds.update((current) => {
+      const next = new Set(current);
+      if (next.has(ingredient.ingredientId)) {
+        next.delete(ingredient.ingredientId);
+      } else {
+        next.add(ingredient.ingredientId);
+      }
+      return next;
     });
   }
 
-  onAddonRemoved(addonId: string): void {
-    this.selectedAddons.update((current) => current.filter((a) => a.addonId !== addonId));
+  onExtraToggled(ingredient: IngredientSummary): void {
+    this.addedExtras.update((current) => {
+      const exists = current.some((item) => item.ingredientId === ingredient.ingredientId);
+      return exists
+        ? current.filter((item) => item.ingredientId !== ingredient.ingredientId)
+        : [...current, ingredient];
+    });
+  }
+
+  onExtraRemoved(ingredientId: string): void {
+    this.addedExtras.update((current) =>
+      current.filter((ingredient) => ingredient.ingredientId !== ingredientId),
+    );
   }
 
   save(): void {
-    this.saved.emit(this.selectedAddons());
+    this.saved.emit({
+      addedIngredients: this.addedExtras(),
+      removedIngredients: this.removedBaseIngredients(),
+    });
   }
 }

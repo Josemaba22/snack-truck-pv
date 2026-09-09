@@ -1,4 +1,4 @@
-.selected-addons {
+.selected-ingredients {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -7,7 +7,7 @@
   list-style: none;
 }
 
-.selected-addons__item {
+.selected-ingredients__item {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -18,24 +18,24 @@
   border-radius: var(--radius-md);
 }
 
-.selected-addons__info {
+.selected-ingredients__info {
   display: flex;
   align-items: baseline;
   gap: 0.75rem;
   min-width: 0;
 }
 
-.selected-addons__name {
+.selected-ingredients__name {
   font-weight: 500;
   color: var(--color-text);
 }
 
-.selected-addons__price {
+.selected-ingredients__price {
   font-size: 0.85rem;
   color: var(--color-text-muted);
 }
 
-.selected-addons__remove {
+.selected-ingredients__remove {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -50,11 +50,11 @@
   transition: transform 0.1s ease;
 }
 
-.selected-addons__remove:hover {
+.selected-ingredients__remove:hover {
   transform: scale(1.1);
 }
 
-.selected-addons__empty {
+.selected-ingredients__empty {
   padding: 1.5rem 1rem;
   text-align: center;
   color: var(--color-text-muted);

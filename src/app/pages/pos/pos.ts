@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { Catalog } from '../../components/products/catalog/catalog';
-import { CustomProduct } from '../../components/products/custom-product/custom-product';
+import { CustomProduct, CustomProductSaved } from '../../components/products/custom-product/custom-product';
 import { CartPanel } from '../../components/order/cart-panel/cart-panel';
 import { PaymentForm } from '../../components/payment/payment-form/payment-form';
 import { CartService } from '../../services/cart';
 import { ProductResponse } from '../../models/api/product.api';
-import { AddonSummary, CartItemUi } from '../../models/ui/cart-item.ui';
+import { IngredientSummary, CartItemUi } from '../../models/ui/cart-item.ui';
 
 type PosStep = 'catalog' | 'personalize' | 'summary' | 'payment';
 
@@ -23,7 +23,8 @@ export class Pos {
 
   selectedProduct = signal<ProductResponse | null>(null);
   editingCartItemId = signal<string | null>(null);
-  editingInitialAddons = signal<AddonSummary[]>([]);
+  editingInitialAddedIngredients = signal<IngredientSummary[]>([]);
+  editingInitialRemovedIngredients = signal<IngredientSummary[]>([]);
 
   constructor(
     private readonly cart: CartService,
@@ -33,14 +34,16 @@ export class Pos {
   onProductSelected(product: ProductResponse): void {
     this.selectedProduct.set(product);
     this.editingCartItemId.set(null);
-    this.editingInitialAddons.set([]);
+    this.editingInitialAddedIngredients.set([]);
+    this.editingInitialRemovedIngredients.set([]);
     this.step.set('personalize');
   }
 
   onEditItem(item: CartItemUi): void {
     this.selectedProduct.set(item.product);
     this.editingCartItemId.set(item.cartItemId);
-    this.editingInitialAddons.set(item.selectedAddons);
+    this.editingInitialAddedIngredients.set(item.addedIngredients);
+    this.editingInitialRemovedIngredients.set(item.removedIngredients);
     this.step.set('personalize');
   }
 
@@ -48,20 +51,21 @@ export class Pos {
     this.step.set(this.editingCartItemId() ? 'summary' : 'catalog');
   }
 
-  onSnackSaved(addons: AddonSummary[]): void {
+  onSnackSaved(saved: CustomProductSaved): void {
     const editingId = this.editingCartItemId();
     if (editingId) {
-      this.cart.updateAddons(editingId, addons);
+      this.cart.updateIngredients(editingId, saved.addedIngredients, saved.removedIngredients);
     } else {
       const product = this.selectedProduct();
       if (product) {
-        this.cart.addProduct(product, addons);
+        this.cart.addProduct(product, saved.addedIngredients, saved.removedIngredients);
       }
     }
 
     this.selectedProduct.set(null);
     this.editingCartItemId.set(null);
-    this.editingInitialAddons.set([]);
+    this.editingInitialAddedIngredients.set([]);
+    this.editingInitialRemovedIngredients.set([]);
     this.step.set('summary');
   }
 

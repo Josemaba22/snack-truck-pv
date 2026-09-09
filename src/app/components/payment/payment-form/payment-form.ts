@@ -87,7 +87,8 @@ export class PaymentForm {
       items: this.cart.items().map((item) => ({
         productId: item.product.id,
         quantity: 1,
-        selectedAddonIds: item.selectedAddons.map((addon) => addon.addonId),
+        extraIngredientIds: item.addedIngredients.map((ingredient) => ingredient.ingredientId),
+        removedIngredientIds: item.removedIngredients.map((ingredient) => ingredient.ingredientId),
       })),
       notes: this.cart.notes(),
       paymentMethod: 'CASH',

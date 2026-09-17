@@ -9,6 +9,12 @@ const NEXT_STATUS: Partial<Record<OrderStatus, OrderStatus>> = {
   READY: 'COMPLETED',
 };
 
+const PREVIOUS_STATUS: Partial<Record<OrderStatus, OrderStatus>> = {
+  IN_PROGRESS: 'PENDING',
+  READY: 'IN_PROGRESS',
+  COMPLETED: 'READY',
+};
+
 const ACTION_LABEL: Partial<Record<OrderStatus, string>> = {
   PENDING: 'Iniciar preparación',
   IN_PROGRESS: 'Marcar listo',
@@ -38,6 +44,8 @@ export class OrderCard {
 
   readonly actionLabel = computed(() => ACTION_LABEL[this.order().status as OrderStatus] ?? null);
 
+  readonly previousStatus = computed(() => PREVIOUS_STATUS[this.order().status as OrderStatus] ?? null);
+
   readonly relativeTime = computed(() => {
     const created = new Date(this.order().createdAt).getTime();
     const minutes = Math.max(0, Math.round((Date.now() - created) / 60000));
@@ -48,6 +56,13 @@ export class OrderCard {
     const next = NEXT_STATUS[this.order().status as OrderStatus];
     if (next) {
       this.advance.emit({ id: this.order().id, nextStatus: next });
+    }
+  }
+
+  onRevertStatus(): void {
+    const previous = this.previousStatus();
+    if (previous) {
+      this.advance.emit({ id: this.order().id, nextStatus: previous });
     }
   }
 }

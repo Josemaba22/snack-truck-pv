@@ -9,7 +9,13 @@
     <span class="order-card__time">{{ order().createdAt | date: 'shortTime' }} ({{ relativeTime() }})</span>
   </header>
 
-  <span class="order-card__status">{{ statusLabel() }}</span>
+  <button
+    type="button"
+    class="order-card__status"
+    [disabled]="!previousStatus()"
+    [attr.aria-label]="previousStatus() ? 'Regresar a estado anterior' : null"
+    (click)="onRevertStatus()"
+  >{{ statusLabel() }}</button>
 
   @if (order().customerName) {
     <p class="order-card__customer">Cliente: {{ order().customerName }}</p>

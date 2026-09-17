@@ -49,6 +49,23 @@
   color: var(--color-text-muted);
   font-weight: 600;
   font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.order-card__status:not(:disabled):hover {
+  background: var(--color-pink-soft);
+}
+
+.order-card__status:not(:disabled):active {
+  transform: scale(0.95);
+}
+
+.order-card__status:disabled {
+  cursor: default;
 }
 
 .order-card--in-progress .order-card__status {
@@ -56,9 +73,17 @@
   color: var(--color-warning-strong);
 }
 
+.order-card--in-progress .order-card__status:not(:disabled):hover {
+  background: var(--color-warning-bg);
+}
+
 .order-card--ready .order-card__status {
   border-color: var(--color-primary);
   color: var(--color-primary);
+}
+
+.order-card--ready .order-card__status:not(:disabled):hover {
+  background: var(--color-primary-bg);
 }
 
 .order-card__items {

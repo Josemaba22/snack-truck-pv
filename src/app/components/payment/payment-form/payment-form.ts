@@ -26,6 +26,7 @@ export class PaymentForm {
   submitting = signal(false);
   errorMessage = signal<string | null>(null);
   confirmPayOpen = signal(false);
+  customerName = signal('');
 
   readonly total = computed(() => this.cart.total());
 
@@ -73,6 +74,10 @@ export class PaymentForm {
     this.confirmPayOpen.set(false);
   }
 
+  setCustomerName(value: string): void {
+    this.customerName.set(value);
+  }
+
   confirm(): void {
     this.confirmPayOpen.set(false);
 
@@ -91,6 +96,7 @@ export class PaymentForm {
         removedIngredientIds: item.removedIngredients.map((ingredient) => ingredient.ingredientId),
       })),
       notes: this.cart.notes(),
+      customerName: this.customerName().trim().length > 0 ? this.customerName().trim() : null,
       paymentMethod: 'CASH',
     };
 
@@ -98,6 +104,7 @@ export class PaymentForm {
       next: () => {
         this.submitting.set(false);
         this.cart.clear();
+        this.customerName.set('');
         this.ordersStore.refresh();
         this.paid.emit();
       },

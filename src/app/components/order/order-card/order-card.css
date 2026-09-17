@@ -107,6 +107,13 @@
   font-style: italic;
 }
 
+.order-card__customer {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
 .order-card__advance {
   align-self: center;
   margin-top: auto;

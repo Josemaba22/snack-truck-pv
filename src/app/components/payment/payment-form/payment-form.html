@@ -82,4 +82,16 @@
   cancelLabel="No"
   (confirmed)="confirm()"
   (cancelled)="dismissConfirmDialog()"
-></app-dialog>
+>
+  <label class="payment-form__customer-label" for="payment-form-customer-name">
+    Nombre del cliente (opcional)
+  </label>
+  <input
+    id="payment-form-customer-name"
+    class="payment-form__customer-input"
+    type="text"
+    placeholder="Nombre del cliente"
+    [value]="customerName()"
+    (input)="setCustomerName($any($event.target).value)"
+  />
+</app-dialog>

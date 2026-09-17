@@ -11,6 +11,10 @@
 
   <span class="order-card__status">{{ statusLabel() }}</span>
 
+  @if (order().customerName) {
+    <p class="order-card__customer">Cliente: {{ order().customerName }}</p>
+  }
+
   <ul class="order-card__items">
     @for (item of order().items; track item.id) {
       <li class="order-card__item">

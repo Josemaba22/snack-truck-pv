@@ -226,3 +226,30 @@
   text-align: center;
   color: var(--color-danger);
 }
+
+.payment-form__customer-label {
+  display: block;
+  margin: 0 0 0.4rem;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.payment-form__customer-input {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 0 1.5rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-pink-soft);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.payment-form__customer-input:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}

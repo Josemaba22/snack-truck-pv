@@ -19,6 +19,8 @@ export interface OrderRequest {
 
   readonly notes: string | null;
 
+  readonly customerName: string | null;
+
   readonly paymentMethod: PaymentMethod;
 }
 
@@ -67,6 +69,8 @@ export interface OrderResponse {
   readonly total: number;
 
   readonly notes: string | null;
+
+  readonly customerName: string | null;
 
   readonly paymentMethod: PaymentMethod;
 

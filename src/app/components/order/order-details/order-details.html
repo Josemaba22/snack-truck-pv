@@ -3,6 +3,10 @@
     Pago: {{ order().paymentMethod === 'CASH' ? 'Efectivo' : order().paymentMethod }}
   </p>
 
+  @if (order().customerName) {
+    <p class="order-details__meta">Cliente: {{ order().customerName }}</p>
+  }
+
   <ul class="order-details__items">
     @for (item of order().items; track item.id) {
       <li class="order-details__item">

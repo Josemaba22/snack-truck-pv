@@ -21,6 +21,7 @@ export class PaymentForm {
   readonly digits = KEY_DIGITS;
 
   paid = output<void>();
+  back = output<void>();
 
   inputBuffer = signal('');
   submitting = signal(false);

@@ -7,14 +7,33 @@
 }
 
 .payment-form__header {
-  padding-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   margin-bottom: 1rem;
-  border-bottom: 1px solid var(--color-pink-soft);
 }
 
-.payment-form__header h2 {
+.payment-form__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background: var(--color-white);
+  border: 1px solid var(--color-pink-soft);
+  border-radius: 50%;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.payment-form__back:hover {
+  background: var(--color-pink-bg);
+}
+
+.payment-form__title {
   margin: 0;
-  text-align: center;
   color: var(--color-text);
 }
 

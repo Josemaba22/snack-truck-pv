@@ -81,6 +81,10 @@ export class Pos {
     this.step.set('catalog');
   }
 
+  onPaymentBack(): void {
+    this.step.set('summary');
+  }
+
   onOrderPaid(): void {
     this.step.set('catalog');
     this.router.navigate(['/kitchen']);

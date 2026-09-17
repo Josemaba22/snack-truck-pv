@@ -18,5 +18,5 @@
     (checkout)="onCheckout()"
   ></app-cart-panel>
 
-  <app-payment-form *ngSwitchCase="'payment'" (paid)="onOrderPaid()"></app-payment-form>
+  <app-payment-form *ngSwitchCase="'payment'" (paid)="onOrderPaid()" (back)="onPaymentBack()"></app-payment-form>
 </div>

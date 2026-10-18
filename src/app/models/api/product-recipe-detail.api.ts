@@ -11,3 +11,9 @@ export interface ProductRecipeDetailResponse {
 
   readonly isBase: boolean;
 }
+
+export interface ProductRecipeDetailRequest {
+  readonly ingredientId: string;
+
+  readonly isBase: boolean | null;
+}

@@ -7,3 +7,11 @@ export interface CategoryResponse {
 
   readonly displayOrder: number;
 }
+
+export interface CategoryRequest {
+  readonly name: string;
+
+  readonly description: string | null;
+
+  readonly displayOrder: number;
+}

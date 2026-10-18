@@ -1,7 +1,9 @@
 <article class="product">
   <button class="product__button" type="button" (click)="onSelect()">
     <div class="product__image-container">
-      <img class="product__image" />
+      @if (product().imageUrl; as imageUrl) {
+        <img class="product__image" [src]="imageUrl" [alt]="product().name" loading="lazy" />
+      }
     </div>
 
     <span class="product__name">{{ product().name }}</span>

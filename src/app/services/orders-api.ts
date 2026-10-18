@@ -13,11 +13,19 @@ export class OrdersApiService {
     return this.http.post<OrderResponse>(`${API_BASE_URL}/orders`, request);
   }
 
+  getById(id: string): Observable<OrderResponse> {
+    return this.http.get<OrderResponse>(`${API_BASE_URL}/orders/${id}`);
+  }
+
   getAll(): Observable<OrderResponse[]> {
     return this.http.get<OrderResponse[]>(`${API_BASE_URL}/orders`);
   }
 
   updateStatus(id: string, status: OrderStatus): Observable<OrderResponse> {
     return this.http.patch<OrderResponse>(`${API_BASE_URL}/orders/${id}/status`, { status });
+  }
+
+  cancel(id: string): Observable<OrderResponse> {
+    return this.http.post<OrderResponse>(`${API_BASE_URL}/orders/${id}/cancel`, {});
   }
 }

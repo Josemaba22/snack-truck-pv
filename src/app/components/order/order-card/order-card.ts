@@ -1,7 +1,8 @@
 import { Component, computed, input, output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
-import { OrderResponse, OrderStatus } from '../../../models/api/order.api';
+import { OrderStatus } from '../../../models/api/order.api';
+import { LocalOrder } from '../../../models/local/local-order';
 
 const NEXT_STATUS: Partial<Record<OrderStatus, OrderStatus>> = {
   PENDING: 'IN_PROGRESS',
@@ -26,7 +27,6 @@ const STATUS_LABEL: Record<string, string> = {
   IN_PROGRESS: 'En proceso',
   READY: 'Listo',
   COMPLETED: 'Entregado',
-  CANCELLED: 'Cancelado',
 };
 
 @Component({
@@ -36,7 +36,7 @@ const STATUS_LABEL: Record<string, string> = {
   styleUrl: './order-card.css',
 })
 export class OrderCard {
-  order = input.required<OrderResponse>();
+  order = input.required<LocalOrder>();
 
   advance = output<{ id: string; nextStatus: OrderStatus }>();
 

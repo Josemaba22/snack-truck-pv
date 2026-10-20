@@ -1,70 +1,59 @@
-import { Component, OnInit, output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { forkJoin } from 'rxjs';
+import { Component, computed, output, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { liveQuery } from 'dexie';
+import { from } from 'rxjs';
 
 import { Category } from '../category/category';
-import { CategoriesApiService } from '../../../services/categories-api';
-import { ProductsApiService } from '../../../services/products-api';
+import { LocalDb } from '../../../services/local-db';
+import { SyncService } from '../../../services/sync';
 import { CategoryUi } from '../../../models/ui/category.ui';
+import { CategoryResponse } from '../../../models/api/category.api';
 import { ProductResponse } from '../../../models/api/product.api';
 
 @Component({
   selector: 'app-catalog',
-  imports: [CommonModule, Category],
+  imports: [Category],
   standalone: true,
   templateUrl: './catalog.html',
   styleUrl: './catalog.css',
 })
-export class Catalog implements OnInit {
-  categoriesUi = signal<CategoryUi[]>([]);
-  productsByCategory = signal<Map<string, ProductResponse[]>>(new Map());
+export class Catalog {
   selectedCategory = signal<CategoryUi | null>(null);
-  loading = signal(true);
-  error = signal<string | null>(null);
 
   productSelected = output<ProductResponse>();
 
+  // Se lee de IndexedDB y se actualiza sola cuando la sincronización refresca el catálogo.
+  private readonly categories = toSignal(
+    from(liveQuery<CategoryResponse[] | null>(() => this.db.categories.orderBy('displayOrder').toArray())),
+    { initialValue: null as CategoryResponse[] | null },
+  );
+  private readonly products = toSignal(
+    from(liveQuery(() => this.db.products.toArray())),
+    { initialValue: [] as ProductResponse[] },
+  );
+
+  readonly categoriesUi = computed<CategoryUi[]>(() =>
+    (this.categories() ?? []).map((category) => ({ ...category, dropdown: false })),
+  );
+
+  readonly productsByCategory = computed(() => {
+    const productsMap = new Map<string, ProductResponse[]>();
+    for (const product of this.products().filter((p) => p.available)) {
+      const existing = productsMap.get(product.categoryId) ?? [];
+      existing.push(product);
+      productsMap.set(product.categoryId, existing);
+    }
+    return productsMap;
+  });
+
+  // Hasta que no haya catálogo guardado se muestra cargando (o el aviso si no hay conexión).
+  readonly loading = computed(() => this.categories() === null);
+  readonly empty = computed(() => this.categories()?.length === 0);
+
   constructor(
-    private readonly categoriesApi: CategoriesApiService,
-    private readonly productsApi: ProductsApiService,
+    private readonly db: LocalDb,
+    readonly sync: SyncService,
   ) {}
-
-  ngOnInit(): void {
-    this.loadData();
-  }
-
-  loadData(): void {
-    this.loading.set(true);
-    this.error.set(null);
-
-    forkJoin({
-      categories: this.categoriesApi.getAll(),
-      products: this.productsApi.getAll(),
-    }).subscribe({
-      next: ({ categories, products }) => {
-        const categoriesUi: CategoryUi[] = categories
-          .slice()
-          .sort((a, b) => a.displayOrder - b.displayOrder)
-          .map((category) => ({ ...category, dropdown: false }));
-
-        const productsMap = new Map<string, ProductResponse[]>();
-        for (const product of products) {
-          const existing = productsMap.get(product.categoryId) ?? [];
-          existing.push(product);
-          productsMap.set(product.categoryId, existing);
-        }
-
-        this.categoriesUi.set(categoriesUi);
-        this.productsByCategory.set(productsMap);
-        this.loading.set(false);
-      },
-      error: (err) => {
-        this.error.set('Error al cargar el catálogo');
-        console.error(err);
-        this.loading.set(false);
-      },
-    });
-  }
 
   getProductsForCategory(categoryId: string): ProductResponse[] {
     return this.productsByCategory().get(categoryId) ?? [];

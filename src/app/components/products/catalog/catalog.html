@@ -1,38 +1,43 @@
 <section>
   <h2>Nuevo Snack</h2>
-  <div *ngIf="loading()" class="loading">
-    <p>Cargando catálogo...</p>
-  </div>
 
-  <div *ngIf="error()" class="error">
-    <p>{{ error() }}</p>
-    <button (click)="loadData()">Reintentar</button>
-  </div>
-
-  <div *ngIf="!loading() && !error()" class="catalog__content">
-    <ng-container *ngIf="selectedCategory() as category; else categoryList">
-      <app-category
-        [category]="category"
-        [products]="getProductsForCategory(category.id)"
-        (back)="clearSelection()"
-        (selected)="productSelected.emit($event)"
-      ></app-category>
-    </ng-container>
-
-    <ng-template #categoryList>
-      <div class="category-list-wrapper">
-        <ul class="category-list">
-          <li *ngFor="let category of categoriesUi()">
-            <button type="button" class="category-list__item" (click)="selectCategory(category)">
-              {{ category.name }}
-            </button>
-          </li>
-        </ul>
-
-        <div *ngIf="categoriesUi().length === 0" class="empty">
-          <p>No hay categorías disponibles</p>
+  @if (loading()) {
+    <div class="loading">
+      <p>Cargando catálogo...</p>
+    </div>
+  } @else if (empty()) {
+    <div class="empty">
+      @if (sync.syncing()) {
+        <p>Descargando catálogo...</p>
+      } @else if (!sync.online()) {
+        <p>Sin catálogo guardado. Conéctate a internet una vez para descargarlo.</p>
+      } @else {
+        <p>No hay categorías disponibles</p>
+        <button type="button" (click)="sync.sync()">Reintentar</button>
+      }
+    </div>
+  } @else {
+    <div class="catalog__content">
+      @if (selectedCategory(); as category) {
+        <app-category
+          [category]="category"
+          [products]="getProductsForCategory(category.id)"
+          (back)="clearSelection()"
+          (selected)="productSelected.emit($event)"
+        ></app-category>
+      } @else {
+        <div class="category-list-wrapper">
+          <ul class="category-list">
+            @for (category of categoriesUi(); track category.id) {
+              <li>
+                <button type="button" class="category-list__item" (click)="selectCategory(category)">
+                  {{ category.name }}
+                </button>
+              </li>
+            }
+          </ul>
         </div>
-      </div>
-    </ng-template>
-  </div>
+      }
+    </div>
+  }
 </section>

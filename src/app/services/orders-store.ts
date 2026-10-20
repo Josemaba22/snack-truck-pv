@@ -1,37 +1,50 @@
-import { Injectable, computed, signal } from '@angular/core';
-import { timer } from 'rxjs';
+import { Injectable, computed } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { liveQuery } from 'dexie';
+import { from } from 'rxjs';
 
-import { OrdersApiService } from './orders-api';
-import { OrderResponse } from '../models/api/order.api';
+import { LocalDb } from './local-db';
+import { NewOrderInput, OrdersRepository } from './orders-repository';
+import { SyncService } from './sync';
+import { OrderStatus } from '../models/api/order.api';
+import { LocalOrder } from '../models/local/local-order';
 
-const POLL_INTERVAL_MS = 12000;
+const ACTIVE_STATUSES = new Set<OrderStatus>(['PENDING', 'IN_PROGRESS', 'READY']);
 
-const ACTIVE_STATUSES = new Set(['PENDING', 'IN_PROGRESS', 'READY']);
-
+// Lo que ve la UI: órdenes leídas de IndexedDB (se actualizan solas) y acciones que escriben
+// en local y disparan la sincronización.
 @Injectable({ providedIn: 'root' })
 export class OrdersStore {
-  private readonly ordersSignal = signal<OrderResponse[]>([]);
-
-  readonly orders = this.ordersSignal.asReadonly();
+  readonly orders = toSignal(from(liveQuery(() => this.db.orders.toArray())), {
+    initialValue: [] as LocalOrder[],
+  });
 
   readonly activeOrders = computed(() =>
-    this.ordersSignal()
+    this.orders()
       .filter((order) => ACTIVE_STATUSES.has(order.status))
-      .sort((a, b) => a.orderNumber - b.orderNumber),
+      .sort((a, b) => a.createdAt.localeCompare(b.createdAt)),
   );
 
   readonly deliveredOrders = computed(() =>
-    this.ordersSignal().filter((order) => order.status === 'COMPLETED'),
+    this.orders()
+      .filter((order) => order.status === 'COMPLETED')
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
   );
 
-  constructor(private readonly ordersApi: OrdersApiService) {
-    timer(0, POLL_INTERVAL_MS).subscribe(() => this.refresh());
+  constructor(
+    private readonly db: LocalDb,
+    private readonly repository: OrdersRepository,
+    private readonly sync: SyncService,
+  ) {}
+
+  async create(input: NewOrderInput): Promise<LocalOrder> {
+    const order = await this.repository.create(input);
+    void this.sync.sync();
+    return order;
   }
 
-  refresh(): void {
-    this.ordersApi.getAll().subscribe({
-      next: (orders) => this.ordersSignal.set(orders),
-      error: (error) => console.error('No se pudieron cargar las órdenes', error),
-    });
+  async changeStatus(orderId: string, status: OrderStatus): Promise<void> {
+    await this.repository.changeStatus(orderId, status);
+    void this.sync.sync();
   }
 }

@@ -3,9 +3,7 @@ import { CurrencyPipe } from '@angular/common';
 
 import { Dialog } from '../../../shared/dialog/dialog';
 import { CartService } from '../../../services/cart';
-import { OrdersApiService } from '../../../services/orders-api';
 import { OrdersStore } from '../../../services/orders-store';
-import { OrderRequest } from '../../../models/api/order.api';
 
 const QUICK_BILLS = [50, 100, 200, 500];
 const KEY_DIGITS = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -44,7 +42,6 @@ export class PaymentForm {
 
   constructor(
     readonly cart: CartService,
-    private readonly ordersApi: OrdersApiService,
     private readonly ordersStore: OrdersStore,
   ) {}
 
@@ -89,31 +86,22 @@ export class PaymentForm {
     this.submitting.set(true);
     this.errorMessage.set(null);
 
-    const request: OrderRequest = {
-      items: this.cart.items().map((item) => ({
-        productId: item.product.id,
-        quantity: 1,
-        extraIngredientIds: item.addedIngredients.map((ingredient) => ingredient.ingredientId),
-        removedIngredientIds: item.removedIngredients.map((ingredient) => ingredient.ingredientId),
-      })),
-      notes: this.cart.notes(),
-      customerName: this.customerName().trim().length > 0 ? this.customerName().trim() : null,
-      paymentMethod: 'CASH',
-    };
-
-    this.ordersApi.create(request).subscribe({
-      next: () => {
+    this.ordersStore
+      .create({
+        items: this.cart.items(),
+        notes: this.cart.notes(),
+        customerName: this.customerName().trim().length > 0 ? this.customerName().trim() : null,
+      })
+      .then(() => {
         this.submitting.set(false);
         this.cart.clear();
         this.customerName.set('');
-        this.ordersStore.refresh();
         this.paid.emit();
-      },
-      error: (err) => {
+      })
+      .catch((err) => {
         this.submitting.set(false);
-        this.errorMessage.set('No se pudo crear la orden. Verifica los datos e intenta de nuevo.');
+        this.errorMessage.set('No se pudo guardar la orden. Intenta de nuevo.');
         console.error(err);
-      },
-    });
+      });
   }
 }

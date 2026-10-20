@@ -13,7 +13,7 @@
     <tbody>
       @for (order of orders(); track order.id) {
         <tr>
-          <td class="orders-table__number"># {{ order.orderNumber }}</td>
+          <td class="orders-table__number"># {{ order.displayNumber }}</td>
           <td>{{ order.createdAt | date: 'short' }}</td>
           <td class="orders-table__total">{{ order.total | currency }}</td>
           <td>{{ order.paymentMethod === 'CASH' ? 'Efectivo' : order.paymentMethod }}</td>

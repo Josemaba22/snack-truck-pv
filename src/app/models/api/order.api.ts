@@ -22,10 +22,19 @@ export interface OrderRequest {
   readonly customerName: string | null;
 
   readonly paymentMethod: PaymentMethod;
+
+  // UUID generado en el dispositivo: hace idempotente el reintento de una creación.
+  readonly clientOrderId: string;
+
+  // Momento en que se tomó la orden en el dispositivo (hora local, sin zona).
+  readonly createdAt: string;
 }
 
 export interface OrderStatusUpdateRequest {
   readonly status: OrderStatus;
+
+  // Momento en que se hizo el cambio en el dispositivo (hora local, sin zona).
+  readonly changedAt: string;
 }
 
 export interface OrderDetailIngredientResponse {
@@ -59,10 +68,11 @@ export interface OrderDetailResponse {
 export interface OrderResponse {
   readonly id: string;
 
+  readonly clientOrderId: string | null;
+
   readonly orderNumber: number;
 
-  // El cliente nunca produce 'CANCELLED', pero el tipo lo admite por honestidad con lo que la API puede devolver.
-  readonly status: OrderStatus | 'CANCELLED';
+  readonly status: OrderStatus;
 
   readonly subtotal: number;
 

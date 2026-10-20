@@ -19,7 +19,7 @@
   <div class="orders-history__overlay" (click)="closeDetails()">
     <div class="orders-history__details" (click)="$event.stopPropagation()">
       <div class="orders-history__details-header">
-        <h3># Orden {{ order.orderNumber }}</h3>
+        <h3># Orden {{ order.displayNumber }}</h3>
         <button
           type="button"
           class="orders-history__close"

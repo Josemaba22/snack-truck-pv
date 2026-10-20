@@ -5,7 +5,7 @@ import { FiltersBar } from '../../components/orders-history/filters-bar/filters-
 import { OrdersTable } from '../../components/orders-history/orders-table/orders-table';
 import { OrderDetails } from '../../components/order/order-details/order-details';
 import { OrdersStore } from '../../services/orders-store';
-import { OrderResponse } from '../../models/api/order.api';
+import { LocalOrder } from '../../models/local/local-order';
 
 @Component({
   selector: 'app-orders-history',
@@ -15,12 +15,12 @@ import { OrderResponse } from '../../models/api/order.api';
 })
 export class OrdersHistory {
   searchQuery = signal('');
-  selectedOrder = signal<OrderResponse | null>(null);
+  selectedOrder = signal<LocalOrder | null>(null);
 
   readonly filteredOrders = computed(() => {
     const query = this.searchQuery();
     const delivered = this.ordersStore.deliveredOrders();
-    return query ? delivered.filter((order) => String(order.orderNumber).includes(query)) : delivered;
+    return query ? delivered.filter((order) => order.displayNumber.includes(query)) : delivered;
   });
 
   constructor(readonly ordersStore: OrdersStore) {}
@@ -29,7 +29,7 @@ export class OrdersHistory {
     this.searchQuery.set(query);
   }
 
-  onViewOrder(order: OrderResponse): void {
+  onViewOrder(order: LocalOrder): void {
     this.selectedOrder.set(order);
   }
 

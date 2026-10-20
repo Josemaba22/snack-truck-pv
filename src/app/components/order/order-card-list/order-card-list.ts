@@ -1,6 +1,7 @@
 import { Component, computed, input, output, signal } from '@angular/core';
 
-import { OrderResponse, OrderStatus } from '../../../models/api/order.api';
+import { OrderStatus } from '../../../models/api/order.api';
+import { LocalOrder } from '../../../models/local/local-order';
 import { OrderCard } from '../order-card/order-card';
 
 const PAGE_SIZE = 4;
@@ -13,7 +14,7 @@ const SWIPE_THRESHOLD_PX = 50;
   styleUrl: './order-card-list.css',
 })
 export class OrderCardList {
-  orders = input.required<OrderResponse[]>();
+  orders = input.required<LocalOrder[]>();
 
   advance = output<{ id: string; nextStatus: OrderStatus }>();
 

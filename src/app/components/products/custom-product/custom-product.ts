@@ -3,7 +3,7 @@ import { CurrencyPipe } from '@angular/common';
 
 import { IngredientPicker } from '../ingredient-picker/ingredient-picker';
 import { SelectedIngredients } from '../selected-ingredients/selected-ingredients';
-import { ProductRecipeDetailsApiService } from '../../../services/product-recipe-details-api';
+import { CatalogRepository } from '../../../services/catalog-repository';
 import { ProductResponse } from '../../../models/api/product.api';
 import { IngredientSummary } from '../../../models/ui/cart-item.ui';
 
@@ -45,7 +45,7 @@ export class CustomProduct implements OnInit {
     ),
   );
 
-  constructor(private readonly productRecipeDetailsApi: ProductRecipeDetailsApiService) {}
+  constructor(private readonly catalog: CatalogRepository) {}
 
   ngOnInit(): void {
     this.addedExtras.set(this.initialAddedIngredients());
@@ -53,8 +53,9 @@ export class CustomProduct implements OnInit {
       this.initialRemovedIngredients().map((ingredient) => ingredient.ingredientId),
     );
 
-    this.productRecipeDetailsApi.getByProduct(this.product().id).subscribe({
-      next: (details) => {
+    this.catalog
+      .getRecipe(this.product().id)
+      .then((details) => {
         const base: IngredientSummary[] = [];
         const extras: IngredientSummary[] = [];
 
@@ -82,12 +83,11 @@ export class CustomProduct implements OnInit {
           ),
         );
         this.loading.set(false);
-      },
-      error: (err) => {
+      })
+      .catch((err) => {
         console.error('No se pudo cargar la receta del producto', err);
         this.loading.set(false);
-      },
-    });
+      });
   }
 
   toggleExtras(): void {

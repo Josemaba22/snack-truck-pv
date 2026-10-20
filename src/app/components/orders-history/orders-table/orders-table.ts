@@ -1,7 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 
-import { OrderResponse } from '../../../models/api/order.api';
+import { LocalOrder } from '../../../models/local/local-order';
 
 @Component({
   selector: 'app-orders-table',
@@ -10,7 +10,7 @@ import { OrderResponse } from '../../../models/api/order.api';
   styleUrl: './orders-table.css',
 })
 export class OrdersTable {
-  orders = input.required<OrderResponse[]>();
+  orders = input.required<LocalOrder[]>();
 
-  viewOrder = output<OrderResponse>();
+  viewOrder = output<LocalOrder>();
 }

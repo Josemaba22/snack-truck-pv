@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 
-import { OrderResponse } from '../../../models/api/order.api';
+import { LocalOrder } from '../../../models/local/local-order';
 
 @Component({
   selector: 'app-summary-cards',
@@ -10,7 +10,7 @@ import { OrderResponse } from '../../../models/api/order.api';
   styleUrl: './summary-cards.css',
 })
 export class SummaryCards {
-  orders = input.required<OrderResponse[]>();
+  orders = input.required<LocalOrder[]>();
 
   readonly count = computed(() => this.orders().length);
 

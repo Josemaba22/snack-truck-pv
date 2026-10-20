@@ -1,0 +1,22 @@
+.sync-status {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 100;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.85rem;
+  color: #fff;
+  background: #555;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.sync-status--offline {
+  background: #b26a00;
+}
+
+.sync-status--error {
+  background: #b3261e;
+}

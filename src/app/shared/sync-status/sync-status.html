@@ -1,0 +1,11 @@
+@if (label(); as text) {
+  <button
+    type="button"
+    class="sync-status"
+    [class.sync-status--offline]="tone() === 'offline'"
+    [class.sync-status--error]="tone() === 'error'"
+    (click)="sync.retryFailed()"
+  >
+    {{ text }}
+  </button>
+}

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-Markesitas (package name `markesitas-v2`) is an Angular 21 point-of-sale application for a snack truck ("snack-truck-pv-db" is the IndexedDB database name). It runs entirely client-side: all data (categories, products, addons, orders) is persisted locally in the browser via Dexie/IndexedDB — there is no backend API.
+Markesitas (package name `markesitas-v2`) is an Angular 21 point-of-sale application for a snack truck ("snack-truck-pv-db" is the IndexedDB database name). It is an offline-first PWA: the UI only reads and writes IndexedDB (Dexie), and a sync layer talks to the REST API (`snack-truck-pv-api`, `API_BASE_URL` in `src/app/core/api-config.ts`) whenever there is a connection.
 
 ## Commands
 
@@ -25,19 +25,19 @@ There is no configured linter (no ESLint config present) — rely on `tsc` (stri
 - `src/app/pages/` — top-level routed pages: `pos`, `kitchen`, `orders-history`, `cash-closing`. Each is a standalone component with its own `.ts`/`.html`/`.css`.
 - `src/app/components/` — feature components grouped by domain: `order/`, `orders-history/`, `payment/`, `products/`. These are composed into the pages above.
 - `src/app/shared/` — reusable, domain-agnostic UI primitives (`button`, `dialog`, `menu`). `shared/button` also has an `example/` folder used as a live component lab for showcasing button variants/sizes — check it when adding new shared components.
-- `src/app/services/` — `indexeddb.ts` (the Dexie database service), `products-repository.ts` (query layer that joins products/categories/addons into view models), `seed-data.ts` (dev-only sample data seeding).
-- `src/app/models/` — split by layer:
-  - `db/` — raw Dexie table shapes (`CategoryDb`, `ProductDb`, `ProductAddonDb`, `ProductDetailDb`)
-  - `view/` — read models composed from multiple db tables for display (e.g. `ProductView` = `ProductDb` + resolved `category` + resolved `addons`)
-  - `ui/` — models that carry local UI state alongside db fields (e.g. `CategoryUi` adds a `dropdown` flag)
+- `src/app/services/` — `*-api.ts` (thin HttpClient wrappers, only used by the sync layer), `local-db.ts` (Dexie schema), `catalog-repository.ts`, `orders-repository.ts`, `orders-store.ts`, `sync.ts`.
+- `src/app/core/` — `order-math.ts` (price calculation mirroring the API), `local-time.ts`, `api-config.ts`.
+- `src/app/models/` — `api/` (request/response shapes of the API), `local/` (`LocalOrder`, `OutboxEntry`), `ui/` (models carrying UI state, e.g. `CartItemUi`).
 
-### Data layer
+### Data layer (offline-first)
 
-`IndexedDbService` (`src/app/services/indexeddb.ts`) extends `Dexie` directly and owns the schema (`categories`, `products`, `addons`, `productDetails` tables) plus low-level CRUD methods. `ProductsRepository` sits on top of it and is responsible for joining raw db rows into `ProductView` objects (resolving a product's `category` and its list of `addons`, applying `priceOverride` from `productDetails` when present). Prefer extending `ProductsRepository` (or adding a sibling repository) for new read models rather than joining data in components.
-
-### Routing state
-
-`app.routes.ts` currently has no routes registered, and `app.ts` wires up top-level components (e.g. `Catalog`, the button `Example` lab) directly rather than through the router. Pages under `src/app/pages/` exist but are not yet connected — when wiring navigation, add routes here rather than assuming they already work.
+- `LocalDb` (`local-db.ts`) owns the Dexie schema: a mirror of the API catalog (`categories`, `products`, `ingredients`, `recipeDetails`), `orders` (`LocalOrder`) and the `outbox` of pending changes.
+- Catalog is read from IndexedDB (components use `liveQuery` → `toSignal`); `CatalogRepository.refresh()` replaces it all-or-nothing from the API.
+- Orders are created/changed locally (`OrdersRepository`, via `OrdersStore`) and queued in `outbox`. `LocalOrder.id` is the `clientOrderId` sent to the API (idempotent create); `serverId` is the API id. Unsynced orders show a provisional number (`L-<n>`) in `displayNumber`.
+- `SyncService` flushes the outbox in order (create before status changes), then pulls orders; network/5xx errors keep the queue, 4xx rejections mark the entry `failed` (blocks later entries of that order until `retryFailed()`). Orders with pending outbox entries are never overwritten by server data.
+- Status transitions in `OrdersRepository` must match the API's `ALLOWED_TRANSITIONS` (including `COMPLETED → READY`). Orders are never cancelled (paid upfront, no refunds).
+- Tests use `fake-indexeddb` (`src/test-setup.ts`); set `Dexie.dependencies.indexedDB = new IDBFactory()` in `beforeEach` for isolation.
+- PWA: `ngsw-config.json` + `public/manifest.webmanifest`; the service worker is only enabled in production builds. Icons in `public/icons` are placeholders.
 
 ### Component conventions
 

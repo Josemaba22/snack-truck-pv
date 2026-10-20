@@ -71,6 +71,9 @@ export class SyncService {
   }
 
   async sync(): Promise<void> {
+    // Sin catálogo guardado se usa el empaquetado, así la app arranca aunque no haya API.
+    await this.catalog.seedIfEmpty().catch((error) => console.error('Sin catálogo inicial', error));
+
     if (!this.online()) {
       return;
     }

@@ -6,7 +6,10 @@ import { IngredientsApiService } from './ingredients-api';
 import { LocalDb } from './local-db';
 import { ProductRecipeDetailsApiService } from './product-recipe-details-api';
 import { ProductsApiService } from './products-api';
+import { CategoryResponse } from '../models/api/category.api';
+import { IngredientResponse } from '../models/api/ingredient.api';
 import { ProductRecipeDetailResponse } from '../models/api/product-recipe-detail.api';
+import { ProductResponse } from '../models/api/product.api';
 
 // Catálogo (categorías, productos, ingredientes y recetas) espejado en IndexedDB. La UI lee
 // siempre de aquí; `refresh()` lo actualiza desde la API cuando hay conexión.
@@ -30,6 +33,35 @@ export class CatalogRepository {
       ingredients.filter((ingredient) => ingredient.available).map((ingredient) => ingredient.id),
     );
     return details.filter((detail) => availableIds.has(detail.ingredientId));
+  }
+
+  // Primer arranque sin API: carga el catálogo empaquetado con la app (public/seed/catalog.json).
+  // Si ya hay catálogo guardado no hace nada.
+  async seedIfEmpty(): Promise<void> {
+    if ((await this.db.categories.count()) > 0) {
+      return;
+    }
+    const response = await fetch('seed/catalog.json');
+    if (!response.ok) {
+      throw new Error(`No se pudo leer el catálogo empaquetado (${response.status})`);
+    }
+    const seed = (await response.json()) as {
+      categories: CategoryResponse[];
+      products: ProductResponse[];
+      ingredients: IngredientResponse[];
+      recipeDetails: ProductRecipeDetailResponse[];
+    };
+
+    await this.db.transaction(
+      'rw',
+      [this.db.categories, this.db.products, this.db.ingredients, this.db.recipeDetails],
+      async () => {
+        await this.db.categories.bulkPut(seed.categories);
+        await this.db.products.bulkPut(seed.products);
+        await this.db.ingredients.bulkPut(seed.ingredients);
+        await this.db.recipeDetails.bulkPut(seed.recipeDetails);
+      },
+    );
   }
 
   // Todo o nada: si falla cualquier petición no se toca lo que ya hay guardado.

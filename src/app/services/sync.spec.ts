@@ -68,7 +68,10 @@ describe('SyncService', () => {
       providers: [
         { provide: LocalDb, useValue: db },
         { provide: OrdersApiService, useValue: ordersApi },
-        { provide: CatalogRepository, useValue: { refresh: () => Promise.resolve() } },
+        {
+          provide: CatalogRepository,
+          useValue: { refresh: () => Promise.resolve(), seedIfEmpty: () => Promise.resolve() },
+        },
       ],
     });
     sync = TestBed.inject(SyncService);

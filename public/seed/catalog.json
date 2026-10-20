@@ -1,0 +1,159 @@
+{
+  "categories": [
+    {
+      "id": "0843d961-ea81-4c4e-8e38-f070f8d21d12",
+      "name": "Marquesitas",
+      "description": "Marquesitas personalizadas",
+      "displayOrder": 1
+    },
+    {
+      "id": "1b336d21-26d3-4d00-b9ea-bfa4f74e8c99",
+      "name": "Bebidas",
+      "description": "Bebidas liquidas de sabor",
+      "displayOrder": 2
+    },
+    {
+      "id": "50fb0fd2-d705-4f1e-ba13-e6922556c94a",
+      "name": "Postres",
+      "description": "Postres preparados",
+      "displayOrder": 3
+    }
+  ],
+  "products": [
+    {
+      "id": "c5fe0c76-e9fa-4bfa-aeff-d71a360a4c61",
+      "name": "Flan",
+      "description": "Flan de vainilla",
+      "price": 45.0,
+      "categoryId": "50fb0fd2-d705-4f1e-ba13-e6922556c94a",
+      "categoryName": "Postres",
+      "available": true,
+      "imageUrl": null,
+      "createdAt": "2026-09-08T05:51:12.295317"
+    },
+    {
+      "id": "31f0e39c-c803-458e-a5a4-0141db71617f",
+      "name": "Marquefresa",
+      "description": "Marquesita con fresas, nutella y espuma de vainilla",
+      "price": 65.0,
+      "categoryId": "0843d961-ea81-4c4e-8e38-f070f8d21d12",
+      "categoryName": "Marquesitas",
+      "available": true,
+      "imageUrl": "seed/images/3f5ca8e7-a4a9-419f-901f-1c12f5b90f9f.png",
+      "createdAt": "2026-09-08T05:51:12.295317"
+    },
+    {
+      "id": "4bf2ddb1-b586-439c-8653-64009e3ade69",
+      "name": "Agua natural",
+      "description": "Agua natural",
+      "price": 20.0,
+      "categoryId": "1b336d21-26d3-4d00-b9ea-bfa4f74e8c99",
+      "categoryName": "Bebidas",
+      "available": true,
+      "imageUrl": "seed/images/4b65174f-b584-4a79-9151-82f49fa15fc2.png",
+      "createdAt": "2026-09-08T05:51:12.295317"
+    }
+  ],
+  "ingredients": [
+    {
+      "id": "3b36e8c4-112a-4274-8630-b4d950404357",
+      "name": "Tortilla",
+      "price": 0.0,
+      "available": true
+    },
+    {
+      "id": "d1659f19-ecfa-4b56-b464-068531727091",
+      "name": "Fresa",
+      "price": 15.0,
+      "available": true
+    },
+    {
+      "id": "dfbd182a-1385-4411-804e-0cff941d65b2",
+      "name": "Platano",
+      "price": 15.0,
+      "available": true
+    },
+    {
+      "id": "c93ab38b-01a8-4cc6-a2d8-d1b613bb42ca",
+      "name": "Nutella",
+      "price": 20.0,
+      "available": true
+    },
+    {
+      "id": "4e492a71-dbea-48b2-bbdc-ec16a9acd548",
+      "name": "Lechera",
+      "price": 15.0,
+      "available": true
+    },
+    {
+      "id": "84e20c06-ace0-4db2-a63e-7a4792d683c0",
+      "name": "Cajeta",
+      "price": 15.0,
+      "available": true
+    },
+    {
+      "id": "c59efca2-64f6-442e-a92e-5fdb72d7fb24",
+      "name": "Oreo",
+      "price": 15.0,
+      "available": true
+    }
+  ],
+  "recipeDetails": [
+    {
+      "id": "252ca629-b2d6-44a0-a7db-a7f669a25fb9",
+      "productId": "31f0e39c-c803-458e-a5a4-0141db71617f",
+      "ingredientId": "3b36e8c4-112a-4274-8630-b4d950404357",
+      "ingredientName": "Tortilla",
+      "ingredientPrice": 0.0,
+      "isBase": true
+    },
+    {
+      "id": "360ea718-a598-4705-8ec3-dd677cdae500",
+      "productId": "31f0e39c-c803-458e-a5a4-0141db71617f",
+      "ingredientId": "d1659f19-ecfa-4b56-b464-068531727091",
+      "ingredientName": "Fresa",
+      "ingredientPrice": 15.0,
+      "isBase": false
+    },
+    {
+      "id": "c968f317-7a49-4dd2-8549-cfb3684d109b",
+      "productId": "31f0e39c-c803-458e-a5a4-0141db71617f",
+      "ingredientId": "dfbd182a-1385-4411-804e-0cff941d65b2",
+      "ingredientName": "Platano",
+      "ingredientPrice": 15.0,
+      "isBase": false
+    },
+    {
+      "id": "9f95b47c-0f09-4b9d-83d5-4636d87399cc",
+      "productId": "31f0e39c-c803-458e-a5a4-0141db71617f",
+      "ingredientId": "c93ab38b-01a8-4cc6-a2d8-d1b613bb42ca",
+      "ingredientName": "Nutella",
+      "ingredientPrice": 20.0,
+      "isBase": false
+    },
+    {
+      "id": "365a714c-302d-4090-a438-1cee38a54ed7",
+      "productId": "31f0e39c-c803-458e-a5a4-0141db71617f",
+      "ingredientId": "4e492a71-dbea-48b2-bbdc-ec16a9acd548",
+      "ingredientName": "Lechera",
+      "ingredientPrice": 15.0,
+      "isBase": false
+    },
+    {
+      "id": "96febc11-6601-4d3f-8da4-5c058c3be4d8",
+      "productId": "31f0e39c-c803-458e-a5a4-0141db71617f",
+      "ingredientId": "84e20c06-ace0-4db2-a63e-7a4792d683c0",
+      "ingredientName": "Cajeta",
+      "ingredientPrice": 15.0,
+      "isBase": false
+    },
+    {
+      "id": "2848b7f5-64bf-4b4e-9a21-f81aff24f08b",
+      "productId": "31f0e39c-c803-458e-a5a4-0141db71617f",
+      "ingredientId": "c59efca2-64f6-442e-a92e-5fdb72d7fb24",
+      "ingredientName": "Oreo",
+      "ingredientPrice": 15.0,
+      "isBase": false
+    }
+  ]
+}

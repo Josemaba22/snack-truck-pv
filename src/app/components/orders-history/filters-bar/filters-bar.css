@@ -17,6 +17,11 @@
   font: inherit;
 }
 
+.filters-bar__input--date {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
 .filters-bar__input::placeholder {
   color: var(--color-text-muted);
 }

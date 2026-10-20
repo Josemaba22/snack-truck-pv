@@ -2,10 +2,18 @@
   <input
     class="filters-bar__input"
     type="text"
-    placeholder="Buscar orden #"
+    placeholder="Buscar por cliente u orden #"
     [ngModel]="query()"
     (ngModelChange)="query.set($event)"
     (keyup.enter)="applyFilter()"
   />
+  <input
+    class="filters-bar__input filters-bar__input--date"
+    type="date"
+    aria-label="Fecha"
+    [ngModel]="date()"
+    (ngModelChange)="date.set($event); applyFilter()"
+  />
   <button type="button" class="filters-bar__button" (click)="applyFilter()">Filtrar</button>
+  <button type="button" class="filters-bar__button" (click)="clear()">Limpiar</button>
 </div>

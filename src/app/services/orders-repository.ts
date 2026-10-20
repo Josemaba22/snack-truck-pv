@@ -84,33 +84,55 @@ export class OrdersRepository {
   }
 
   async changeStatus(orderId: string, target: OrderStatus): Promise<void> {
+    await this.db.transaction('rw', [this.db.orders, this.db.outbox], () =>
+      this.applyStatus(orderId, target),
+    );
+  }
+
+  // Entrega la orden de una vez: el avance PENDING -> IN_PROGRESS -> READY de cocina es solo
+  // visual, así que aquí se registran los pasos intermedios que la API exige, en una sola escritura.
+  async complete(orderId: string): Promise<void> {
     await this.db.transaction('rw', [this.db.orders, this.db.outbox], async () => {
       const order = await this.db.orders.get(orderId);
       if (!order) {
         throw new Error(`Orden desconocida: ${orderId}`);
       }
-      if (!ALLOWED_TRANSITIONS[order.status].includes(target)) {
-        throw new Error(`Transición no permitida: ${order.status} -> ${target}`);
+      if (order.status === 'PENDING') {
+        await this.applyStatus(orderId, 'IN_PROGRESS');
       }
-
-      const now = localIsoNow();
-      let completedAt = order.completedAt;
-      if (target === 'COMPLETED') {
-        completedAt = now;
-      } else if (order.status === 'COMPLETED') {
-        completedAt = null;
+      if (order.status === 'PENDING' || order.status === 'IN_PROGRESS') {
+        await this.applyStatus(orderId, 'READY');
       }
+      await this.applyStatus(orderId, 'COMPLETED');
+    });
+  }
 
-      await this.db.orders.update(orderId, { status: target, completedAt });
-      await this.db.outbox.add({
-        orderId,
-        type: 'update-status',
-        status: target,
-        at: now,
-        attempts: 0,
-        failed: false,
-        lastError: null,
-      });
+  private async applyStatus(orderId: string, target: OrderStatus): Promise<void> {
+    const order = await this.db.orders.get(orderId);
+    if (!order) {
+      throw new Error(`Orden desconocida: ${orderId}`);
+    }
+    if (!ALLOWED_TRANSITIONS[order.status].includes(target)) {
+      throw new Error(`Transición no permitida: ${order.status} -> ${target}`);
+    }
+
+    const now = localIsoNow();
+    let completedAt = order.completedAt;
+    if (target === 'COMPLETED') {
+      completedAt = now;
+    } else if (order.status === 'COMPLETED') {
+      completedAt = null;
+    }
+
+    await this.db.orders.update(orderId, { status: target, completedAt });
+    await this.db.outbox.add({
+      orderId,
+      type: 'update-status',
+      status: target,
+      at: now,
+      attempts: 0,
+      failed: false,
+      lastError: null,
     });
   }
 }

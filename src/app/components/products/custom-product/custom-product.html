@@ -11,47 +11,38 @@
 
   @if (loading()) {
     <p class="custom-product__loading">Cargando receta...</p>
-  } @else if (extrasOpen()) {
-    <div class="custom-product__extras">
-      <h3 class="custom-product__extras-title">Extras</h3>
-
-      <app-ingredient-picker
-        [ingredients]="extraIngredients()"
-        [selectedIds]="addedExtraIds()"
-        emptyMessage="Este producto no tiene extras disponibles"
-        (toggled)="onExtraToggled($event)"
-      ></app-ingredient-picker>
-
-      <button type="button" class="custom-product__cancel" (click)="toggleExtras()">Cancelar</button>
-    </div>
   } @else {
-    <div class="custom-product__body">
-      @if (baseIngredients().length > 0) {
-        <div class="custom-product__ingredients">
-          <h3 class="custom-product__ingredients-title">Ingredientes</h3>
-          <p class="custom-product__ingredients-hint">Toca uno para quitarlo</p>
+    <div class="custom-product__body" [style.--total-rows]="baseRows() + extraRows()">
+      <section class="custom-product__panel" [style.--rows]="baseRows()">
+        <header class="custom-product__panel-header">
+          <h3 class="custom-product__panel-title">Ingredientes</h3>
+          <span class="custom-product__panel-hint">Toca uno para quitarlo</span>
+        </header>
 
-          <app-ingredient-picker
-            [ingredients]="baseIngredients()"
-            [selectedIds]="includedBaseIds()"
-            [showPrice]="false"
-            (toggled)="onBaseIngredientToggled($event)"
-          ></app-ingredient-picker>
-        </div>
-      }
+        <app-ingredient-picker
+          [ingredients]="baseIngredients()"
+          [selectedIds]="includedBaseIds()"
+          [columns]="gridColumns()"
+          [showPrice]="false"
+          emptyMessage="Este producto no tiene ingredientes base"
+          (toggled)="onBaseIngredientToggled($event)"
+        ></app-ingredient-picker>
+      </section>
 
-      @if (addedExtras().length > 0) {
-        <app-selected-ingredients
-          [ingredients]="addedExtras()"
-          [interactive]="true"
-          (removed)="onExtraRemoved($event)"
-        ></app-selected-ingredients>
-      }
+      <section class="custom-product__panel" [style.--rows]="extraRows()">
+        <header class="custom-product__panel-header">
+          <h3 class="custom-product__panel-title">Extras</h3>
+          <span class="custom-product__panel-hint">Toca uno para agregarlo</span>
+        </header>
 
-      <button type="button" class="custom-product__add-extra" (click)="toggleExtras()">
-        <span class="custom-product__add-extra-icon" aria-hidden="true">+</span>
-        Extra
-      </button>
+        <app-ingredient-picker
+          [ingredients]="extraIngredients()"
+          [selectedIds]="addedExtraIds()"
+          [columns]="gridColumns()"
+          emptyMessage="Este producto no tiene extras disponibles"
+          (toggled)="onExtraToggled($event)"
+        ></app-ingredient-picker>
+      </section>
     </div>
 
     <footer class="custom-product__footer">

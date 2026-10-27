@@ -28,4 +28,15 @@ export class IngredientsApiService {
   delete(id: string): Observable<void> {
     return this.http.delete<void>(`${API_BASE_URL}/ingredients/${id}`);
   }
+
+  // JPEG, PNG o WebP, máx. 5MB. La API valida por magic bytes.
+  uploadImage(id: string, file: File): Observable<IngredientResponse> {
+    const body = new FormData();
+    body.append('file', file);
+    return this.http.put<IngredientResponse>(`${API_BASE_URL}/ingredients/${id}/image`, body);
+  }
+
+  deleteImage(id: string): Observable<IngredientResponse> {
+    return this.http.delete<IngredientResponse>(`${API_BASE_URL}/ingredients/${id}/image`);
+  }
 }

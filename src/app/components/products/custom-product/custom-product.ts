@@ -2,7 +2,6 @@ import { Component, OnInit, computed, input, output, signal } from '@angular/cor
 import { CurrencyPipe } from '@angular/common';
 
 import { IngredientPicker } from '../ingredient-picker/ingredient-picker';
-import { SelectedIngredients } from '../selected-ingredients/selected-ingredients';
 import { CatalogRepository } from '../../../services/catalog-repository';
 import { ProductResponse } from '../../../models/api/product.api';
 import { IngredientSummary } from '../../../models/ui/cart-item.ui';
@@ -16,7 +15,7 @@ export interface CustomProductSaved {
 @Component({
   selector: 'app-custom-product',
   standalone: true,
-  imports: [CurrencyPipe, IngredientPicker, SelectedIngredients],
+  imports: [CurrencyPipe, IngredientPicker],
   templateUrl: './custom-product.html',
   styleUrl: './custom-product.css',
 })
@@ -32,11 +31,37 @@ export class CustomProduct implements OnInit {
   extraIngredients = signal<IngredientSummary[]>([]);
   includedBaseIds = signal<Set<string>>(new Set());
   addedExtras = signal<IngredientSummary[]>([]);
-  extrasOpen = signal(false);
   loading = signal(true);
 
   readonly addedExtraIds = computed(
     () => new Set(this.addedExtras().map((ingredient) => ingredient.ingredientId)),
+  );
+
+  // Ambos paneles comparten columnas y reparten la altura por filas, así las celdas miden igual.
+  // Se elige el número de columnas que da la celda más grande en un área aproximadamente 2:1.
+  readonly gridColumns = computed(() => {
+    const baseCount = this.baseIngredients().length;
+    const extraCount = this.extraIngredients().length;
+    let best = 1;
+    let bestSize = 0;
+    for (let cols = 1; cols <= Math.max(baseCount, extraCount, 1); cols++) {
+      const rows =
+        Math.max(1, Math.ceil(baseCount / cols)) + Math.max(1, Math.ceil(extraCount / cols));
+      const size = Math.min(2 / cols, 1 / rows);
+      if (size > bestSize) {
+        best = cols;
+        bestSize = size;
+      }
+    }
+    return best;
+  });
+
+  readonly baseRows = computed(() =>
+    Math.max(1, Math.ceil(this.baseIngredients().length / this.gridColumns())),
+  );
+
+  readonly extraRows = computed(() =>
+    Math.max(1, Math.ceil(this.extraIngredients().length / this.gridColumns())),
   );
 
   readonly removedBaseIngredients = computed(() =>
@@ -64,6 +89,7 @@ export class CustomProduct implements OnInit {
             ingredientId: detail.ingredientId,
             ingredientName: detail.ingredientName,
             ingredientPrice: detail.ingredientPrice,
+            ingredientImageUrl: detail.ingredientImageUrl ?? null,
           };
 
           if (detail.isBase) {
@@ -90,10 +116,6 @@ export class CustomProduct implements OnInit {
       });
   }
 
-  toggleExtras(): void {
-    this.extrasOpen.update((value) => !value);
-  }
-
   onBaseIngredientToggled(ingredient: IngredientSummary): void {
     this.includedBaseIds.update((current) => {
       const next = new Set(current);
@@ -113,12 +135,6 @@ export class CustomProduct implements OnInit {
         ? current.filter((item) => item.ingredientId !== ingredient.ingredientId)
         : [...current, ingredient];
     });
-  }
-
-  onExtraRemoved(ingredientId: string): void {
-    this.addedExtras.update((current) =>
-      current.filter((ingredient) => ingredient.ingredientId !== ingredientId),
-    );
   }
 
   save(): void {

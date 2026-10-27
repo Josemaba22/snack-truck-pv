@@ -23,16 +23,24 @@ export class CatalogRepository {
     private readonly recipeDetailsApi: ProductRecipeDetailsApiService,
   ) {}
 
-  // Receta de un producto con solo los ingredientes disponibles (la API rechaza los demás).
+  // Receta de un producto con solo los ingredientes disponibles (la API rechaza los demás),
+  // cada uno con la imagen del ingrediente.
   async getRecipe(productId: string): Promise<ProductRecipeDetailResponse[]> {
     const [details, ingredients] = await Promise.all([
       this.db.recipeDetails.where('productId').equals(productId).toArray(),
       this.db.ingredients.toArray(),
     ]);
-    const availableIds = new Set(
-      ingredients.filter((ingredient) => ingredient.available).map((ingredient) => ingredient.id),
+    const availableById = new Map(
+      ingredients
+        .filter((ingredient) => ingredient.available)
+        .map((ingredient) => [ingredient.id, ingredient] as const),
     );
-    return details.filter((detail) => availableIds.has(detail.ingredientId));
+    return details
+      .filter((detail) => availableById.has(detail.ingredientId))
+      .map((detail) => ({
+        ...detail,
+        ingredientImageUrl: availableById.get(detail.ingredientId)?.imageUrl ?? null,
+      }));
   }
 
   // Primer arranque sin API: carga el catálogo empaquetado con la app (public/seed/catalog.json).

@@ -6,6 +6,8 @@ export interface IngredientResponse {
   readonly price: number;
 
   readonly available: boolean;
+
+  readonly imageUrl: string | null;
 }
 
 export interface IngredientRequest {

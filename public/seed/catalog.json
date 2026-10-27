@@ -59,43 +59,50 @@
       "id": "3b36e8c4-112a-4274-8630-b4d950404357",
       "name": "Tortilla",
       "price": 0.0,
-      "available": true
+      "available": true,
+      "imageUrl": null
     },
     {
       "id": "d1659f19-ecfa-4b56-b464-068531727091",
       "name": "Fresa",
       "price": 15.0,
-      "available": true
+      "available": true,
+      "imageUrl": null
     },
     {
       "id": "dfbd182a-1385-4411-804e-0cff941d65b2",
       "name": "Platano",
       "price": 15.0,
-      "available": true
+      "available": true,
+      "imageUrl": null
     },
     {
       "id": "c93ab38b-01a8-4cc6-a2d8-d1b613bb42ca",
       "name": "Nutella",
       "price": 20.0,
-      "available": true
+      "available": true,
+      "imageUrl": null
     },
     {
       "id": "4e492a71-dbea-48b2-bbdc-ec16a9acd548",
       "name": "Lechera",
       "price": 15.0,
-      "available": true
+      "available": true,
+      "imageUrl": null
     },
     {
       "id": "84e20c06-ace0-4db2-a63e-7a4792d683c0",
       "name": "Cajeta",
       "price": 15.0,
-      "available": true
+      "available": true,
+      "imageUrl": null
     },
     {
       "id": "c59efca2-64f6-442e-a92e-5fdb72d7fb24",
       "name": "Oreo",
       "price": 15.0,
-      "available": true
+      "available": true,
+      "imageUrl": null
     }
   ],
   "recipeDetails": [

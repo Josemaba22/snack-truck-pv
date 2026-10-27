@@ -6,6 +6,8 @@ export interface IngredientSummary {
   readonly ingredientName: string;
 
   readonly ingredientPrice: number;
+
+  readonly ingredientImageUrl?: string | null;
 }
 
 export interface CartItemUi {

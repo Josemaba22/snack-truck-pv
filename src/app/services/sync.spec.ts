@@ -28,6 +28,7 @@ const item: CartItemUi = {
   },
   addedIngredients: [],
   removedIngredients: [],
+  notes: null,
 };
 
 function serverOrder(overrides: Partial<OrderResponse> = {}): OrderResponse {
@@ -38,7 +39,6 @@ function serverOrder(overrides: Partial<OrderResponse> = {}): OrderResponse {
     status: 'PENDING',
     subtotal: 45,
     total: 45,
-    notes: null,
     customerName: null,
     paymentMethod: 'CASH',
     createdAt: '2026-10-19T10:00:00',
@@ -78,7 +78,7 @@ describe('SyncService', () => {
   });
 
   it('envía la creación con clientOrderId y luego el cambio de estatus, en orden', async () => {
-    const order = await repository.create({ items: [item], notes: null, customerName: null });
+    const order = await repository.create({ items: [item], customerName: null });
     await repository.changeStatus(order.id, 'IN_PROGRESS');
 
     ordersApi.create.mockReturnValue(of(serverOrder({ clientOrderId: order.id })));
@@ -97,7 +97,7 @@ describe('SyncService', () => {
   });
 
   it('conserva la cola cuando no hay red y reintenta después', async () => {
-    const order = await repository.create({ items: [item], notes: null, customerName: null });
+    const order = await repository.create({ items: [item], customerName: null });
     ordersApi.create.mockReturnValue(throwError(() => new HttpErrorResponse({ status: 0 })));
 
     await sync.sync();
@@ -113,7 +113,7 @@ describe('SyncService', () => {
   });
 
   it('marca como fallida una creación rechazada y no envía sus cambios posteriores', async () => {
-    const order = await repository.create({ items: [item], notes: null, customerName: null });
+    const order = await repository.create({ items: [item], customerName: null });
     await repository.changeStatus(order.id, 'READY');
     ordersApi.create.mockReturnValue(
       throwError(() => new HttpErrorResponse({ status: 409, error: { message: 'Product is not available' } })),
@@ -127,7 +127,7 @@ describe('SyncService', () => {
   });
 
   it('descarga órdenes del servidor sin pisar las que tienen cambios pendientes', async () => {
-    const local = await repository.create({ items: [item], notes: null, customerName: null });
+    const local = await repository.create({ items: [item], customerName: null });
     await db.outbox.clear();
     await db.orders.update(local.id, { serverId: 'srv-2', syncState: 'synced' });
     await repository.changeStatus(local.id, 'READY');

@@ -148,3 +148,29 @@
 .custom-product__save:active {
   transform: scale(0.99);
 }
+
+.custom-product__notes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.custom-product__notes textarea {
+  padding: 0.5rem 0.85rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-pink-soft);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 400;
+  resize: none;
+}
+
+.custom-product__notes textarea:focus {
+  outline: none;
+  border-color: var(--color-pink-strong);
+}

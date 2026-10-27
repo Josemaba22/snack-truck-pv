@@ -18,8 +18,6 @@ const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
 export interface NewOrderInput {
   readonly items: CartItemUi[];
 
-  readonly notes: string | null;
-
   readonly customerName: string | null;
 }
 
@@ -60,7 +58,6 @@ export class OrdersRepository {
         status: 'PENDING',
         subtotal,
         total: subtotal,
-        notes: input.notes,
         customerName: input.customerName,
         paymentMethod: 'CASH',
         createdAt: now,
@@ -163,6 +160,7 @@ function toOrderDetail(item: CartItemUi): OrderDetailResponse {
     productName: item.product.name,
     quantity,
     unitPrice: item.product.price,
+    notes: item.notes,
     ingredients,
     subtotal: lineSubtotal(
       item.product.price,

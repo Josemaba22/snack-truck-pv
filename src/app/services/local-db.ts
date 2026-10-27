@@ -42,5 +42,21 @@ export class LocalDb extends Dexie {
         // Las filas de v1 tenían otra forma (CategoryDb/ProductDb); el catálogo se vuelve a bajar.
         Promise.all([tx.table('categories').clear(), tx.table('products').clear()]),
       );
+
+    // La nota deja de ser de la orden y pasa a cada snack: las órdenes guardadas conservan la
+    // suya en el primer snack. No cambian los índices.
+    this.version(3)
+      .stores({})
+      .upgrade((tx) =>
+        tx
+          .table('orders')
+          .toCollection()
+          .modify((order: { notes?: string | null; items: { notes?: string | null }[] }) => {
+            order.items.forEach((item, index) => {
+              item.notes = index === 0 ? (order.notes ?? null) : null;
+            });
+            delete order.notes;
+          }),
+      );
   }
 }

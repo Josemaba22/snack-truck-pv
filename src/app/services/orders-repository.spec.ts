@@ -23,6 +23,7 @@ const item: CartItemUi = {
   product,
   addedIngredients: [{ ingredientId: 'i1', ingredientName: 'Queso', ingredientPrice: 10 }],
   removedIngredients: [{ ingredientId: 'i2', ingredientName: 'Nutella', ingredientPrice: 12 }],
+  notes: 'sin picante',
 };
 
 describe('OrdersRepository', () => {
@@ -36,11 +37,12 @@ describe('OrdersRepository', () => {
   });
 
   it('crea la orden en local con totales, folio provisional y entrada en la cola', async () => {
-    const order = await repository.create({ items: [item], notes: null, customerName: 'Ana' });
+    const order = await repository.create({ items: [item], customerName: 'Ana' });
 
     expect(order.status).toBe('PENDING');
     expect(order.total).toBe(55);
     expect(order.displayNumber).toBe('L-1');
+    expect(order.items[0].notes).toBe('sin picante');
     expect(order.items[0].ingredients.map((i) => [i.action, i.unitPrice])).toEqual([
       ['ADDED', 10],
       ['REMOVED', 0],
@@ -52,14 +54,14 @@ describe('OrdersRepository', () => {
   });
 
   it('numera las órdenes locales de forma consecutiva', async () => {
-    await repository.create({ items: [item], notes: null, customerName: null });
-    const second = await repository.create({ items: [item], notes: null, customerName: null });
+    await repository.create({ items: [item], customerName: null });
+    const second = await repository.create({ items: [item], customerName: null });
 
     expect(second.displayNumber).toBe('L-2');
   });
 
   it('permite avanzar y regresar el estatus, y encola cada cambio', async () => {
-    const order = await repository.create({ items: [item], notes: null, customerName: null });
+    const order = await repository.create({ items: [item], customerName: null });
 
     await repository.changeStatus(order.id, 'READY');
     await repository.changeStatus(order.id, 'COMPLETED');
@@ -73,7 +75,7 @@ describe('OrdersRepository', () => {
   });
 
   it('rechaza transiciones que la API no permite', async () => {
-    const order = await repository.create({ items: [item], notes: null, customerName: null });
+    const order = await repository.create({ items: [item], customerName: null });
 
     await expect(repository.changeStatus(order.id, 'COMPLETED')).rejects.toThrow();
     expect(await db.outbox.count()).toBe(1);

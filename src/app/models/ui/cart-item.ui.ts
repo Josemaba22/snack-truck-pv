@@ -18,6 +18,8 @@ export interface CartItemUi {
   readonly addedIngredients: IngredientSummary[];
 
   readonly removedIngredients: IngredientSummary[];
+
+  readonly notes: string | null;
 }
 
 export function cartItemTotal(item: CartItemUi): number {

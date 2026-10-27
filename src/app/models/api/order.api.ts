@@ -12,12 +12,12 @@ export interface OrderItemRequest {
   readonly extraIngredientIds: string[];
 
   readonly removedIngredientIds: string[];
+
+  readonly notes: string | null;
 }
 
 export interface OrderRequest {
   readonly items: OrderItemRequest[];
-
-  readonly notes: string | null;
 
   readonly customerName: string | null;
 
@@ -60,6 +60,8 @@ export interface OrderDetailResponse {
 
   readonly unitPrice: number;
 
+  readonly notes: string | null;
+
   readonly ingredients: OrderDetailIngredientResponse[];
 
   readonly subtotal: number;
@@ -77,8 +79,6 @@ export interface OrderResponse {
   readonly subtotal: number;
 
   readonly total: number;
-
-  readonly notes: string | null;
 
   readonly customerName: string | null;
 

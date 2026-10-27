@@ -1,6 +1,5 @@
 import { Component, output, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 import { CartService } from '../../../services/cart';
 import { Dialog } from '../../../shared/dialog/dialog';
@@ -9,7 +8,7 @@ import { CartItemUi, cartItemTotal } from '../../../models/ui/cart-item.ui';
 @Component({
   selector: 'app-cart-panel',
   standalone: true,
-  imports: [CurrencyPipe, FormsModule, Dialog],
+  imports: [CurrencyPipe, Dialog],
   templateUrl: './cart-panel.html',
   styleUrl: './cart-panel.css',
 })
@@ -26,10 +25,6 @@ export class CartPanel {
 
   lineTotal(item: CartItemUi): number {
     return cartItemTotal(item);
-  }
-
-  onNotesChange(value: string): void {
-    this.cart.setNotes(value);
   }
 
   openRemoveConfirm(item: CartItemUi): void {

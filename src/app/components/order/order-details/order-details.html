@@ -26,13 +26,13 @@
             }
           </ul>
         }
+
+        @if (item.notes) {
+          <p class="order-details__notes">Nota: {{ item.notes }}</p>
+        }
       </li>
     }
   </ul>
-
-  @if (order().notes) {
-    <p class="order-details__notes">Notas: {{ order().notes }}</p>
-  }
 
   <div class="order-details__total">Total: {{ order().total | currency }}</div>
 </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit, computed, input, output, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { IngredientPicker } from '../ingredient-picker/ingredient-picker';
 import { CatalogRepository } from '../../../services/catalog-repository';
@@ -10,12 +11,14 @@ export interface CustomProductSaved {
   readonly addedIngredients: IngredientSummary[];
 
   readonly removedIngredients: IngredientSummary[];
+
+  readonly notes: string | null;
 }
 
 @Component({
   selector: 'app-custom-product',
   standalone: true,
-  imports: [CurrencyPipe, IngredientPicker],
+  imports: [CurrencyPipe, FormsModule, IngredientPicker],
   templateUrl: './custom-product.html',
   styleUrl: './custom-product.css',
 })
@@ -23,6 +26,7 @@ export class CustomProduct implements OnInit {
   product = input.required<ProductResponse>();
   initialAddedIngredients = input<IngredientSummary[]>([]);
   initialRemovedIngredients = input<IngredientSummary[]>([]);
+  initialNotes = input<string | null>(null);
 
   back = output<void>();
   saved = output<CustomProductSaved>();
@@ -31,6 +35,7 @@ export class CustomProduct implements OnInit {
   extraIngredients = signal<IngredientSummary[]>([]);
   includedBaseIds = signal<Set<string>>(new Set());
   addedExtras = signal<IngredientSummary[]>([]);
+  notes = signal('');
   loading = signal(true);
 
   readonly addedExtraIds = computed(
@@ -74,6 +79,7 @@ export class CustomProduct implements OnInit {
 
   ngOnInit(): void {
     this.addedExtras.set(this.initialAddedIngredients());
+    this.notes.set(this.initialNotes() ?? '');
     const initiallyRemovedIds = new Set(
       this.initialRemovedIngredients().map((ingredient) => ingredient.ingredientId),
     );
@@ -141,6 +147,7 @@ export class CustomProduct implements OnInit {
     this.saved.emit({
       addedIngredients: this.addedExtras(),
       removedIngredients: this.removedBaseIngredients(),
+      notes: this.notes().trim().length > 0 ? this.notes().trim() : null,
     });
   }
 }

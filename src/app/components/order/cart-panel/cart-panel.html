@@ -31,8 +31,14 @@
               </ul>
             }
 
+            @if (item.notes) {
+              <p class="cart-panel__item-notes">{{ item.notes }}</p>
+            }
+
             <div class="cart-panel__item-footer">
-              <span class="cart-panel__item-subtotal">Subtotal: {{ lineTotal(item) | currency }}</span>
+              <span class="cart-panel__item-subtotal"
+                >Subtotal: {{ lineTotal(item) | currency }}</span
+              >
 
               <div class="cart-panel__item-actions">
                 <button
@@ -86,27 +92,19 @@
         }
       </ul>
     }
+  </div>
 
+  <footer class="cart-panel__footer">
     <button type="button" class="cart-panel__add-snack" (click)="addSnack.emit()">
       <span class="cart-panel__add-snack-icon" aria-hidden="true">+</span>
       Agregar Snack
     </button>
-
-    <label class="cart-panel__notes">
-      Nota
-      <textarea
-        [ngModel]="cart.notes()"
-        (ngModelChange)="onNotesChange($event)"
-        placeholder="Escribe una nota para esta orden..."
-      ></textarea>
-    </label>
-  </div>
-
-  <footer class="cart-panel__footer">
     <div class="cart-panel__total">Total: {{ cart.total() | currency }}</div>
 
     <div class="cart-panel__actions">
-      <button type="button" class="cart-panel__cancel" (click)="openCancelConfirm()">Cancelar Orden</button>
+      <button type="button" class="cart-panel__cancel" (click)="openCancelConfirm()">
+        Cancelar Orden
+      </button>
       <button
         type="button"
         class="cart-panel__checkout"

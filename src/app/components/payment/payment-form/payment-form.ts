@@ -89,7 +89,6 @@ export class PaymentForm {
     this.ordersStore
       .create({
         items: this.cart.items(),
-        notes: this.cart.notes(),
         customerName: this.customerName().trim().length > 0 ? this.customerName().trim() : null,
       })
       .then(() => {

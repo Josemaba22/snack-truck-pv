@@ -46,6 +46,15 @@
     </div>
 
     <footer class="custom-product__footer">
+      <label class="custom-product__notes">
+        Nota
+        <textarea
+          rows="2"
+          [ngModel]="notes()"
+          (ngModelChange)="notes.set($event)"
+          placeholder="Escribe una nota para este snack..."
+        ></textarea>
+      </label>
       <button type="button" class="custom-product__save" (click)="save()">Guardar Snack</button>
     </footer>
   }

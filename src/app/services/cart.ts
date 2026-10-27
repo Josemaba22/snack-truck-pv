@@ -6,10 +6,8 @@ import { ProductResponse } from '../models/api/product.api';
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private readonly itemsSignal = signal<CartItemUi[]>([]);
-  private readonly notesSignal = signal<string | null>(null);
 
   readonly items = this.itemsSignal.asReadonly();
-  readonly notes = this.notesSignal.asReadonly();
 
   readonly total = computed(() =>
     this.itemsSignal().reduce((sum, item) => sum + cartItemTotal(item), 0),
@@ -21,24 +19,29 @@ export class CartService {
     product: ProductResponse,
     addedIngredients: IngredientSummary[],
     removedIngredients: IngredientSummary[],
+    notes: string | null,
   ): void {
     const item: CartItemUi = {
       cartItemId: crypto.randomUUID(),
       product,
       addedIngredients,
       removedIngredients,
+      notes,
     };
     this.itemsSignal.update((items) => [...items, item]);
   }
 
-  updateIngredients(
+  updateItem(
     cartItemId: string,
     addedIngredients: IngredientSummary[],
     removedIngredients: IngredientSummary[],
+    notes: string | null,
   ): void {
     this.itemsSignal.update((items) =>
       items.map((item) =>
-        item.cartItemId === cartItemId ? { ...item, addedIngredients, removedIngredients } : item,
+        item.cartItemId === cartItemId
+          ? { ...item, addedIngredients, removedIngredients, notes }
+          : item,
       ),
     );
   }
@@ -47,12 +50,7 @@ export class CartService {
     this.itemsSignal.update((items) => items.filter((item) => item.cartItemId !== cartItemId));
   }
 
-  setNotes(notes: string): void {
-    this.notesSignal.set(notes.trim().length > 0 ? notes : null);
-  }
-
   clear(): void {
     this.itemsSignal.set([]);
-    this.notesSignal.set(null);
   }
 }

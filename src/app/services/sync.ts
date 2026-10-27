@@ -234,8 +234,8 @@ function toOrderRequest(order: LocalOrder): OrderRequest {
       removedIngredientIds: item.ingredients
         .filter((ingredient) => ingredient.action === 'REMOVED')
         .map((ingredient) => ingredient.ingredientId),
+      notes: item.notes,
     })),
-    notes: order.notes,
     customerName: order.customerName,
     paymentMethod: order.paymentMethod,
     clientOrderId: order.id,

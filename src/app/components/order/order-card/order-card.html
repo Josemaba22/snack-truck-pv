@@ -15,7 +15,7 @@
     [disabled]="!previousStatus()"
     [attr.aria-label]="previousStatus() ? 'Regresar a estado anterior' : null"
     (click)="onRevertStatus()"
-  >{{ statusLabel() }}</button>
+>{{ statusLabel() }}</button>
 
   @if (order().customerName) {
     <p class="order-card__customer">Cliente: {{ order().customerName }}</p>
@@ -37,13 +37,13 @@
             }
           </ul>
         }
+
+        @if (item.notes) {
+          <p class="order-card__notes">- {{ item.notes }}</p>
+        }
       </li>
     }
   </ul>
-
-  @if (order().notes) {
-    <p class="order-card__notes">- {{ order().notes }}</p>
-  }
 
   @if (actionLabel(); as label) {
     <button type="button" class="order-card__advance" (click)="onAdvance()">{{ label }}</button>
